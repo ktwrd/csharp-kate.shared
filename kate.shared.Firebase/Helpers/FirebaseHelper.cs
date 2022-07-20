@@ -9,8 +9,8 @@ namespace kate.shared.Helpers
 {
     public interface bFirebaseSerializable
     {
-        void FromFirebase(DocumentSnapshot document);
-        void ToFirebase(DocumentReference document);
+        Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement);
+        Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement);
         DocumentReference GetFirebaseDocumentReference(FirestoreDb database);
     }
     public static class FirebaseHelper
@@ -31,7 +31,7 @@ namespace kate.shared.Helpers
             return defaultValue;
         }
 
-        public static T ParseDocumentReference<T>(DocumentSnapshot document, string key, T defaultValue) where T : bFirebaseSerializable, new()
+        public async static Task<T> ParseDocumentReference<T>(VoidDelegate completeIncrement, DocumentSnapshot document, string key, T defaultValue) where T : bFirebaseSerializable, new()
         {
             try
             {
@@ -39,26 +39,25 @@ namespace kate.shared.Helpers
                 if (attemptedValue == null)
                     return defaultValue;
                 var f = (DocumentReference)attemptedValue;
-                return DeserializeDocumentReference<T>(f);
+                return await DeserializeDocumentReference<T>(f, completeIncrement);
             }
             catch
             { }
             return new T();
         }
 
-        public static T DeserializeDocumentReference<T>(DocumentReference document) where T : bFirebaseSerializable, new()
+        public async static Task<T> DeserializeDocumentReference<T>(DocumentReference document, VoidDelegate completeIncrement) where T : bFirebaseSerializable, new()
         {
             var filePath = document.Path.Split("documents/")[1];
-            var snapshot = document.Database.Document(filePath).GetSnapshotAsync();
-            snapshot.Wait();
-            return DeserializeDocumentSnapshot<T>(snapshot.Result);
+            var snapshot = await document.Database.Document(filePath).GetSnapshotAsync();
+            return DeserializeDocumentSnapshot<T>(snapshot, completeIncrement);
         }
-        public static T DeserializeDocumentSnapshot<T>(DocumentSnapshot snapshot) where T : bFirebaseSerializable, new()
+        public static T DeserializeDocumentSnapshot<T>(DocumentSnapshot snapshot, VoidDelegate completeIncrement) where T : bFirebaseSerializable, new()
         {
             try
             {
                 var obj = new T();
-                obj.FromFirebase(snapshot);
+                obj.FromFirebase(snapshot, completeIncrement);
                 return obj;
             }
             catch
