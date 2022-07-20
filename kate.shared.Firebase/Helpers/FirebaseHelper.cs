@@ -17,8 +17,7 @@ namespace kate.shared.Helpers
     {
 
         public static Dictionary<Type, string> FirebaseCollection = new Dictionary<Type, string>()
-        {
-        };
+        { };
         public static string ParseString(DocumentSnapshot document, string key, string defaultValue="") => Parse<string>(document, key, defaultValue ?? "");
 
         public static T Parse<T>(DocumentSnapshot document, string key, T defaultValue)
@@ -36,7 +35,7 @@ namespace kate.shared.Helpers
         {
             try
             {
-                var attemptedValue = Parse<object>(document, key, null);
+                var attemptedValue = Parse<object>(document, key, new object());
                 if (attemptedValue == null)
                     return defaultValue;
                 var f = (DocumentReference)attemptedValue;
