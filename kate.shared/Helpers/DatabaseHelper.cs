@@ -9,7 +9,7 @@ namespace kate.shared.Helpers
         public delegate void ReadHandler(SerializationReader reader);
         public delegate void WriteHandler(SerializationWriter writer);
 
-        public static bool Read(string filename, ReadHandler handler, ExceptionDelegate onFail = null)
+        public static bool Read(string filename, ReadHandler handler, ExceptionDelegate? onFail = null)
         {
             if (!File.Exists(filename)) return false;
 
