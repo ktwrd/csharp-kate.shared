@@ -1,4 +1,5 @@
 ﻿using Google.Cloud.Firestore;
+using kate.shared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace kate.shared.Helpers
 
         public static Dictionary<Type, string> FirebaseCollection = new Dictionary<Type, string>()
         { };
-        public static string ParseString(DocumentSnapshot document, string key, string defaultValue="") => Parse<string>(document, key, defaultValue ?? "");
+        public static string ParseString(DocumentSnapshot document, string key, string defaultValue="") => Parse<string>(document, key, defaultValue);
 
         public static T Parse<T>(DocumentSnapshot document, string key, T defaultValue)
         {

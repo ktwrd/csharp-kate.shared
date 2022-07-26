@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace kate.shared.Helpers
@@ -9,7 +10,7 @@ namespace kate.shared.Helpers
         public delegate void ReadHandler(SerializationReader reader);
         public delegate void WriteHandler(SerializationWriter writer);
 
-        public static bool Read(string filename, ReadHandler handler, ExceptionDelegate? onFail = null)
+        public static bool Read(string filename, ReadHandler handler, ExceptionDelegate onFail = null)
         {
             if (!File.Exists(filename)) return false;
 
@@ -24,7 +25,8 @@ namespace kate.shared.Helpers
             }
             catch (Exception e)
             {
-                onFail?.Invoke(e);
+                if (onFail != null)
+                    onFail.Invoke(e);
 
                 try
                 {
