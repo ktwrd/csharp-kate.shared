@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <Configurations>Debug;Release;Debug (Build Service API)</Configurations>
   </PropertyGroup>
 
   <Import Project="..\kate.shared\kate.shared.projitems" Label="Shared" />

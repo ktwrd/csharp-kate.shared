@@ -250,7 +250,7 @@ namespace kate.shared.Helpers
 
                     default:
                         Write((byte)ObjectType.otherType);
-                        BinaryFormatter b = new BinaryFormatter();
+                        System.Runtime.Serialization.Formatters.Binary.BinaryFormatter b = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                         b.AssemblyFormat = FormatterAssemblyStyle.Simple;
                         b.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
                         b.Serialize(BaseStream, obj);
@@ -343,7 +343,7 @@ namespace kate.shared.Helpers
         }
 
         /// <summary> Reads a generic list from the buffer. </summary>
-        public IList<T> ReadBList<T>() where T : bSerializable, new()
+        public IList<T> ReadBList<T>() where T : kate.shared.Helpers.bSerializable, new()
         {
             int count = ReadInt32();
             if (count < 0) return null;

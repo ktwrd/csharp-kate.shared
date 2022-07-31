@@ -12,15 +12,16 @@ namespace kate.shared.Helpers
     public class DynamicDeserializer
     {
         private static VersionConfigToNamespaceAssemblyObjectBinder versionBinder;
-        private static BinaryFormatter formatter;
+        private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter;
 
 
         private static void Initialize()
         {
             versionBinder = new VersionConfigToNamespaceAssemblyObjectBinder();
-            formatter = new BinaryFormatter();
+            formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
             formatter.Binder = versionBinder;
+            
         }
 
         public static Object Deserialize(Stream stream)
