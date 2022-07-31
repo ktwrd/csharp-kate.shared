@@ -9,6 +9,30 @@ namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        public static string ToBase62(ulong number)
+        {
+            var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var n = number;
+            ulong basis = 62;
+            var ret = "";
+            while (n > 0)
+            {
+                ulong temp = n % basis;
+                ret = alphabet[(int)temp] + ret;
+                n /= basis;
+
+            }
+            return ret;
+        }
+        public static string Base62Encode(byte[] data)
+        {
+            var characters = "";
+            foreach (var b in data)
+            {
+                characters += ToBase62(b);
+            }
+            return characters;
+        }
         public static string GenerateToken(int length)
         {
             const string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
