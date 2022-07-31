@@ -19,7 +19,8 @@ namespace kate.shared.Helpers
 
         ~SafeWriteStream()
         {
-            if (!isDisposed) Dispose();
+            if (!isDisposed) Dispose(false);
+            return;
         }
 
         public void Abort()

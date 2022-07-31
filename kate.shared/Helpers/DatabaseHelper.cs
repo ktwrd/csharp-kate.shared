@@ -50,7 +50,7 @@ namespace kate.shared.Helpers
                         handler(writer);
                         return true;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         stream.Abort();
                         throw;

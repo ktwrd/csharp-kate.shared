@@ -85,7 +85,7 @@ namespace kate.shared.Helpers
                         }
                     }
                 }
-                catch (Exception exception)
+                catch
                 {
                     throw;
                 }
