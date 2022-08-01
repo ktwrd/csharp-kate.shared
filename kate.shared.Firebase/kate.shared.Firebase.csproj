@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>netstandard2.1;net6.0;net48;</TargetFrameworks>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher</Configurations>
   </PropertyGroup>
 
   <Import Project="..\kate.shared\kate.shared.projitems" Label="Shared" />
