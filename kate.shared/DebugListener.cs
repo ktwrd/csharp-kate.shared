@@ -24,11 +24,7 @@ namespace kate.shared
         internal void Initialize()
         {
             updateTimer = new Timer(onTimerUpdate, autoEvent, 0, 250);
-
-            #if NETFRAMEWORK
-            Debug.Listeners.Remove("Default");
-            Debug.Listeners.Add(Listener);
-            #endif
+            Trace.Listeners.Add(Listener);
         }
 
         private Timer updateTimer;
