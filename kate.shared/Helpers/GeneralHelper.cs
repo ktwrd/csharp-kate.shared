@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -9,6 +10,13 @@ namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        public static long GetNanoseconds()
+        {
+            double timestamp = Stopwatch.GetTimestamp();
+            double nanoseconds = 1_000_000_000.0 * timestamp / Stopwatch.Frequency;
+
+            return (long)nanoseconds;
+        }
         public static string ToBase62(ulong number)
         {
             var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
