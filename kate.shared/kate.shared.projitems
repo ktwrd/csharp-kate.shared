@@ -19,5 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\GeneralHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RegExStatements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SafeWriteableStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JsonConverter.cs" />
   </ItemGroup>
 </Project>
