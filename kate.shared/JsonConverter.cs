@@ -12,7 +12,13 @@ namespace kate.shared
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Debug.Assert(typeToConvert == typeof(DateTime));
-            return DateTime.Parse(reader.GetString() ?? string.Empty);
+            DateTime offset = new DateTime();
+            try
+            {
+                offset = DateTime.Parse(reader.GetString() ?? string.Empty);
+            }
+            catch (Exception) { }
+            return offset;
         }
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
@@ -25,7 +31,13 @@ namespace kate.shared
         public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Debug.Assert(typeToConvert == typeof(DateTimeOffset));
-            return DateTimeOffset.Parse(reader.GetString() ?? string.Empty);
+            DateTimeOffset offset = new DateTimeOffset();
+            try
+            {
+                offset = DateTimeOffset.Parse(reader.GetString() ?? string.Empty);
+            }
+            catch(Exception){ }
+            return offset;
         }
 
         public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
