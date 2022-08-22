@@ -8,10 +8,10 @@ Here you will find multiple C# Projects that are mostly for a specific use-case 
 | ----------------- | ------------------ |
 | 6.x (recommended) | **Working**        |
 | 5.x               | Not Tested         |
-| Framework 4.x     | Not Tested         |
+| Framework 4.x     | **Working**        |
 | Framework 3.x     | Not Tested         |
 | Framework 2.x     | Not Tested         |
-| Core 3.x          | Not Tested         |
+| Core 3.x          | **Working**        |
 | Core 2.x          | Not Tested         |
 | Core 1.x          | Not Tested         |
 ## Projects
