@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,6 +11,12 @@ namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        public static List<T> GetEnumList<T>()
+        {
+            T[] array = (T[])Enum.GetValues(typeof(T));
+            List<T> list = new List<T>(array);
+            return list;
+        }
         public static long GetNanoseconds()
         {
             double timestamp = Stopwatch.GetTimestamp();
