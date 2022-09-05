@@ -73,14 +73,14 @@ namespace kate.shared
 
         public override void Write(string message)
         {
-            System.Console.WriteLine(message);
+            System.Console.WriteLine($"[DEBUG] {message}");
             lock (pendingLines)
                 pendingLines.Add(message);
         }
 
         public override void WriteLine(string message)
         {
-            System.Console.WriteLine(message);
+            System.Console.WriteLine($"[DEBUG] {message}");
             lock (pendingLines)
                 pendingLines.Add(message);
         }
@@ -92,8 +92,6 @@ namespace kate.shared
             {
                 List<string> pending = new List<string>(pendingLines);
                 pendingLines.Clear();
-                foreach (var l in pending)
-                    Console.WriteLine($"[DEBUG] {l}");
                 return pending;
             }
         }
