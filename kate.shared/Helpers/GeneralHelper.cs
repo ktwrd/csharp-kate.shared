@@ -17,6 +17,11 @@ namespace kate.shared.Helpers
             List<T> list = new List<T>(array);
             return list;
         }
+        public static void WriteStringToMemoryStream(MemoryStream stream, string content, int position=0)
+        {
+            var bytes = Encoding.UTF8.GetBytes(content);
+            stream.Write(bytes, position, bytes.Length);
+        }
         public static long GetNanoseconds()
         {
             double timestamp = Stopwatch.GetTimestamp();
