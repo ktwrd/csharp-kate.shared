@@ -11,6 +11,16 @@ namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        public static T[] FixedArraySize<T>(T[] array, int length)
+        {
+            int maxIndex = Math.Min(length, array.Length);
+            T[] result = new T[length];
+            for (int i = 0; i < maxIndex; i++)
+            {
+                result[i] = array[i];
+            }
+            return result;
+        }
         public static List<T> GetEnumList<T>()
         {
             T[] array = (T[])Enum.GetValues(typeof(T));
