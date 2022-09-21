@@ -6,11 +6,61 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Numerics;
 
 namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        public static T[] FixedArraySize<T>(T[] array, int length)
+        {
+            int maxIndex = Math.Min(length, array.Length);
+            T[] result = new T[length];
+            for (int i = 0; i < maxIndex; i++)
+            {
+                result[i] = array[i];
+            }
+            return result;
+        }
+        public static class Cast
+        {
+            public static double[] ToDoubleArray(short[] array)
+            {
+                var result = new double[array.Length];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = float.Parse(array[i].ToString());
+                }
+                return result;
+            }
+            public static double[] ToDoubleArray(int[] array)
+            {
+                var result = new double[array.Length];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = float.Parse(array[i].ToString());
+                }
+                return result;
+            }
+            public static float[] ToFloatArray(short[] array)
+            {
+                var result = new float[array.Length];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = float.Parse(array[i].ToString());
+                }
+                return result;
+            }
+            public static float[] ToFloatArray(int[] array)
+            {
+                var result = new float[array.Length];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = float.Parse(array[i].ToString());
+                }
+                return result;
+            }
+        }
         public static List<T> GetEnumList<T>()
         {
             T[] array = (T[])Enum.GetValues(typeof(T));
