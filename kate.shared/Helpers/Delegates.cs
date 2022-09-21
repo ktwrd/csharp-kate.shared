@@ -12,4 +12,5 @@ namespace kate.shared.Helpers
     public delegate void BoolDelegate(bool b);
     public delegate bool BoolReturnDelegate(bool b);
     public delegate T Constraint<T>(T value);
+    public delegate void ComparisonDelegate<T>(T current, T previous);
 }
