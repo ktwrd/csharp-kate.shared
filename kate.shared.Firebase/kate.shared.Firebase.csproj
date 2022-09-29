@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net6.0;net48;</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server;Debug - MLBackend</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
-
-  <Import Project="..\kate.shared\kate.shared.projitems" Label="Shared" />
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Firestore" Version="3.0.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\kate.shared\kate.shared.csproj" />
   </ItemGroup>
 
 </Project>

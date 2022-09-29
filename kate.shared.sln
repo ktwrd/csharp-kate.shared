@@ -3,15 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "kate.shared", "kate.shared\kate.shared.shproj", "{A1C98DE4-B369-4821-A565-6C921CAF8D88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kate.shared.Firebase", "kate.shared.Firebase\kate.shared.Firebase.csproj", "{DE5ADE6D-36A3-4F15-8813-DA3FF462E821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kate.shared.Firebase", "kate.shared.Firebase\kate.shared.Firebase.csproj", "{DE5ADE6D-36A3-4F15-8813-DA3FF462E821}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kate.shared", "kate.shared\kate.shared.csproj", "{8C341BD2-36EB-47FD-8C3F-F52866531D69}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		kate.shared\kate.shared.projitems*{a1c98de4-b369-4821-a565-6c921caf8d88}*SharedItemsImports = 13
-		kate.shared\kate.shared.projitems*{de5ade6d-36a3-4f15-8813-da3ff462e821}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -21,6 +17,10 @@ Global
 		{DE5ADE6D-36A3-4F15-8813-DA3FF462E821}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE5ADE6D-36A3-4F15-8813-DA3FF462E821}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE5ADE6D-36A3-4F15-8813-DA3FF462E821}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C341BD2-36EB-47FD-8C3F-F52866531D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C341BD2-36EB-47FD-8C3F-F52866531D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C341BD2-36EB-47FD-8C3F-F52866531D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C341BD2-36EB-47FD-8C3F-F52866531D69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
