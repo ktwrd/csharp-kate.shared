@@ -79,6 +79,12 @@ namespace kate.shared.Helpers
 
             return (long)nanoseconds;
         }
+        public static long GetMicroseconds()
+        {
+            double timestamp = Stopwatch.GetTimestamp();
+            double microseconds = 1_000_000.0 * timestamp / Stopwatch.Frequency;
+            return (long)microseconds;
+        }
         public static string ToBase62(ulong number)
         {
             var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
