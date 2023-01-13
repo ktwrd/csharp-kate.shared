@@ -15,7 +15,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <UserSecretsId>e29538d2-b40d-4a48-bc10-89cfa4af1c82</UserSecretsId>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
