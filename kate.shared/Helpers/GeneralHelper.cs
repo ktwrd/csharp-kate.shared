@@ -12,6 +12,54 @@ namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        /// <summary>
+        /// Properly format a strings line endings to the desired line endings. Currently supports; LF, CR, and CRLF.
+        /// </summary>
+        /// <param name="content">Content to properly format the line endings.</param>
+        /// <param name="lineEnding">Target line ending. Defaulted to LF</param>
+        /// <returns>String with the properly formatted line endings.</returns>
+        public static string FormatLineEndings(string content, string lineEnding="\n")
+        {
+            var lines = new List<string>();
+            string currentWorkingString = "";
+
+            char previousChar = (char)0;
+            char LF = (char)10;
+            char CR = (char)13;
+            for (int i = 0; i < content.Length; i++)
+            {
+                char c = content[i];
+                // not any form of line ending, which means
+                // it's safe to append to working string.
+                if (c != CR && c != LF)
+                {   
+                    currentWorkingString += c;
+                }
+                
+                // current char is LF and previous isn't CR
+                // that way we know it's just LF line endings
+                // and not CRLF line endings
+                if (c == LF && previousChar != CR)
+                {
+                    lines.Add(currentWorkingString);
+                    currentWorkingString = "";
+                }
+                
+                // always safe to add CR line endings
+                // since in all common line endings,
+                // CR is before LF or LF doesn't exist
+                // at all so it's just CR.
+                if (c == CR)
+                {
+                    lines.Add(currentWorkingString);
+                    currentWorkingString = "";
+                }
+                previousChar = c;
+            }
+            lines.Add(currentWorkingString);
+
+            return string.Join(lineEnding, lines);
+        }
         public static T[] FixedArraySize<T>(T[] array, int length)
         {
             int maxIndex = Math.Min(length, array.Length);
