@@ -180,6 +180,10 @@ namespace kate.shared.Helpers
             }
             return res.ToString();
         }
+        public static string GenerateGUID()
+        {
+            return Guid.NewGuid().ToString();
+        }
         public const int MAX_PATH_LENGTH = 248;
 
         public const string CLEANUP_DIRECTORY = @"_cleanup";
