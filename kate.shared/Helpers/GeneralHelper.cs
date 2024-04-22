@@ -7,11 +7,132 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Numerics;
+using System.Threading.Tasks;
+using System.Reflection;
 
 namespace kate.shared.Helpers
 {
     public static class GeneralHelper
     {
+        /// <summary>
+        /// Format the duration between <paramref name="start"/> and the current date (using <see cref="DateTimeOffset.UtcNow"/>
+        /// </summary>
+        /// <returns><see cref="FormatDuration(TimeSpan)"/></returns>
+        public static string GenerateTaskDuration(DateTimeOffset start)
+        {
+            var end = DateTimeOffset.UtcNow;
+            var diff = end - start;
+
+            return FormatDuration(diff);
+        }
+        /// <summary>
+        /// Will format a timespan to `HH:MM:ss.sss` or `ss.sss seconds`.
+        /// </summary>
+        public static string FormatDuration(TimeSpan duration)
+        {
+            var st = new List<string>();
+
+            if (duration.Hours > 0)
+                st.Add(duration.Hours.ToString().PadLeft(2, '0'));
+            if (duration.Minutes > 0)
+                st.Add(duration.Minutes.ToString().PadLeft(2, '0'));
+
+            st.Add(duration.Seconds.ToString().PadLeft(2, '0') + "." + duration.Milliseconds.ToString().PadLeft(3, '0'));
+
+            var stj = string.Join(":", st);
+            if (st.Count < 2)
+            {
+                return $"{stj} seconds";
+            }
+            else
+            {
+                return stj;
+            }
+        }
+        /// <summary>
+        /// Start all tasks in <paramref name="taskList"/> then return <see cref="Task.WhenAll(IEnumerable{Task})"/> where the parameter is the taskList provided.
+        /// </summary>
+        public static Task WaitTaskList(IEnumerable<Task> taskList)
+        {
+            foreach (var i in taskList)
+                i.Start();
+            return Task.WhenAll(taskList);
+        }
+        /// <summary>
+        /// Fetch an embedded resource from the assembly provided.
+        /// </summary>
+        /// <returns>null when not found</returns>
+        public static string GetEmbeddedResourceAsString(string resourceName, Assembly assembly)
+        {
+            string data = null;
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                        data = reader.ReadToEnd();
+                    }
+                }
+            }
+            return data;
+        }
+        /// <summary>
+        /// Convert an array of bytes to hexadecimal.
+        /// </summary>
+        public static string ToHex(byte[] data)
+        {
+            return BitConverter.ToString(data).Replace("-", "");
+        }
+        /// <summary>
+        /// Create a SHA256 based off the <paramref name="content"/> provided.
+        /// </summary>
+        /// <param name="content">Content to hash</param>
+        /// <returns>Uppercase SHA256 Hash in Hexadecimal.</returns>
+        public static string CreateSha256Hash(byte[] content)
+        {
+            using (SHA256 hash = SHA256.Create())
+            {
+                var bytes = hash.ComputeHash(content);
+                var builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+        /// <inheritdoc cref="CreateSha256Hash(byte[])"/>
+        public static string CreateSha256Hash(string content)
+        {
+            return CreateSha256Hash(Encoding.UTF8.GetBytes(content));
+        }
+        /// <summary>
+        /// Get all types that have the attribute provided.
+        /// </summary>
+        /// <param name="asm">Assembly to use.</param>
+        public static IEnumerable<(Type, TAttribute)> GetTypesByAttribute<TAttribute>(Assembly asm)
+            where TAttribute : Attribute
+        {
+            foreach (Type type in asm.GetTypes())
+            {
+                var tr = type.GetCustomAttribute<TAttribute>(true);
+                if (tr != null)
+                {
+                    yield return (type, tr);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Allocates a new console for the calling process.
+        /// </summary>
+        /// <returns>
+        /// When `false`, the function has failed. You can call <see href="https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</see> to get more details.</returns>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool AllocConsole();
+
         /// <summary>
         /// Properly format a strings line endings to the desired line endings. Currently supports; LF, CR, and CRLF.
         /// </summary>
@@ -32,10 +153,10 @@ namespace kate.shared.Helpers
                 // not any form of line ending, which means
                 // it's safe to append to working string.
                 if (c != CR && c != LF)
-                {   
+                {
                     currentWorkingString += c;
                 }
-                
+
                 // current char is LF and previous isn't CR
                 // that way we know it's just LF line endings
                 // and not CRLF line endings
@@ -44,7 +165,7 @@ namespace kate.shared.Helpers
                     lines.Add(currentWorkingString);
                     currentWorkingString = "";
                 }
-                
+
                 // always safe to add CR line endings
                 // since in all common line endings,
                 // CR is before LF or LF doesn't exist
@@ -60,6 +181,12 @@ namespace kate.shared.Helpers
 
             return string.Join(lineEnding, lines);
         }
+        /// <summary>
+        /// Trim an Array to make sure it's length doesn't exceed the <paramref name="length"/> provided.
+        /// </summary>
+        /// <typeparam name="T">Type of the items in the <paramref name="array"/></typeparam>
+        /// <param name="array">Array of items with the type of <typeparamref name="T"/> that you want to trim.</param>
+        /// <param name="length">Maximum length of result.</param>
         public static T[] FixedArraySize<T>(T[] array, int length)
         {
             int maxIndex = Math.Min(length, array.Length);
@@ -109,17 +236,28 @@ namespace kate.shared.Helpers
                 return result;
             }
         }
+        /// <summary>
+        /// Get a list of all items that are in the type provided.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static List<T> GetEnumList<T>()
         {
             T[] array = (T[])Enum.GetValues(typeof(T));
             List<T> list = new List<T>(array);
             return list;
         }
+        /// <summary>
+        /// Write the string <paramref name="content"/> as UTF8 to the <paramref name="stream"/> provided.
+        /// </summary>
         public static void WriteStringToMemoryStream(MemoryStream stream, string content, int position=0)
         {
             var bytes = Encoding.UTF8.GetBytes(content);
             stream.Write(bytes, position, bytes.Length);
         }
+        /// <summary>
+        /// Get nanoseconds from <see cref="Stopwatch.GetTimestamp"/>
+        /// </summary>
         public static long GetNanoseconds()
         {
             double timestamp = Stopwatch.GetTimestamp();
@@ -127,6 +265,10 @@ namespace kate.shared.Helpers
 
             return (long)nanoseconds;
         }
+        /// <summary>
+        /// Get microseconds from <see cref="Stopwatch.GetTimestamp"/>
+        /// </summary>
+        /// <returns></returns>
         public static long GetMicroseconds()
         {
             double timestamp = Stopwatch.GetTimestamp();
@@ -144,7 +286,6 @@ namespace kate.shared.Helpers
                 ulong temp = n % basis;
                 ret = alphabet[(int)temp] + ret;
                 n /= basis;
-
             }
             return ret;
         }
@@ -157,6 +298,10 @@ namespace kate.shared.Helpers
             }
             return characters;
         }
+        /// <summary>
+        /// Generate a string that is all capitals from A-Z and 0-9.
+        /// </summary>
+        /// <param name="length">Length of the token to generate.</param>
         public static string GenerateToken(int length)
         {
             const string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -168,6 +313,11 @@ namespace kate.shared.Helpers
             }
             return res.ToString();
         }
+        /// <summary>
+        /// <para>Generate a string that can be used as a unique identifier.</para>
+        ///
+        /// <para>A-Z Uppercase, A-Z lowercase, and 0-9.</para>
+        /// </summary>
         public static string GenerateUID()
         {
             int length = 20;
@@ -180,6 +330,9 @@ namespace kate.shared.Helpers
             }
             return res.ToString();
         }
+        /// <summary>
+        /// Generate a GUID with <see cref="Guid.NewGuid"/>
+        /// </summary>
         public static string GenerateGUID()
         {
             return Guid.NewGuid().ToString();
@@ -216,6 +369,9 @@ namespace kate.shared.Helpers
             return entry;
         }
 
+        /// <summary>
+        /// Encoding the provided value to be suitable for a URL Parameter.
+        /// </summary>
         public static string UrlEncode(string str)
         {
             if (str == null)
@@ -520,6 +676,9 @@ namespace kate.shared.Helpers
             Directory.Delete(oldDirectory, true);
         }
 
+        /// <summary>
+        /// Get the extension of a file.
+        /// </summary>
         public static string GetExtension(string filename)
         {
             return Path.GetExtension(filename).Trim('.').ToLower();
@@ -545,12 +704,9 @@ namespace kate.shared.Helpers
 
             return highestPathLength;
         }
-
-        public static string CleanStoryboardFilename(string filename)
-        {
-            return PathStandardise(filename.Trim(new[] { '"' }));
-        }
-
+        /// <summary>
+        /// Convert a string to a byte array.
+        /// </summary>
         public static byte[] StringToByteArray(String hex)
         {
             int NumberChars = hex.Length;
@@ -626,7 +782,7 @@ namespace kate.shared.Helpers
         }
 
         /// <summary>
-        /// Returns the path without the extension of the file. 
+        /// Returns the path without the extension of the file.
         /// Contrarily to Path.GetFileNameWithoutExtension, it keeps the path to the file ("sb/triangle.png" becomes "sb/triangle" and not "triangle")
         /// </summary>
         public static string StripExtension(string filepath)
@@ -644,11 +800,17 @@ namespace kate.shared.Helpers
             return res;
         }
 
+        /// <summary>
+        /// Encode a string into Base64 (UTF8)
+        /// </summary>
         public static string Base64Encode(string data)
         {
             var bytes = Encoding.UTF8.GetBytes(data);
             return Convert.ToBase64String(bytes);
         }
+        /// <summary>
+        /// Decode a Base64 UTF8 encoded string
+        /// </summary>
         public static string Base64Decode(string base64Data)
         {
             var encodedBytes = Convert.FromBase64String(base64Data);
