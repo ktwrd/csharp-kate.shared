@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
+	  <TargetFrameworks>netstandard2.1;net48;net6.0;net8.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Kate's Utility Library</Title>
@@ -15,7 +15,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <UserSecretsId>e29538d2-b40d-4a48-bc10-89cfa4af1c82</UserSecretsId>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
