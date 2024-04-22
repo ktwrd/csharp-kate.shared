@@ -4,6 +4,7 @@ using System.Text;
 
 namespace kate.shared.Helpers
 {
+#if NET8_0_OR_GREATER == false
     public interface bSerializable
     {
         void ReadFromStream(SerializationReader sr);
@@ -14,5 +15,5 @@ namespace kate.shared.Helpers
     {
         void WriteToStreamIrc(SerializationWriter sw);
     }
-
+#endif
 }

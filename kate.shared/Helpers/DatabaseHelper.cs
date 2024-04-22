@@ -5,6 +5,7 @@ using System.Text;
 
 namespace kate.shared.Helpers
 {
+#if NET8_0_OR_GREATER == false
     public class DatabaseHelper
     {
         public delegate void ReadHandler(SerializationReader reader);
@@ -65,4 +66,5 @@ namespace kate.shared.Helpers
         }
 
     }
+#endif
 }

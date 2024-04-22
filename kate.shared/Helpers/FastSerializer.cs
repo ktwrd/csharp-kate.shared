@@ -9,6 +9,7 @@ using System.Threading;
 
 namespace kate.shared.Helpers
 {
+#if NET8_0_OR_GREATER == false
     public enum ObjectType : byte
     {
         nullType,
@@ -445,5 +446,5 @@ namespace kate.shared.Helpers
             }
         }
     }
-
+#endif
 }

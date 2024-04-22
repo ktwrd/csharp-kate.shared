@@ -9,16 +9,17 @@ using System.Text;
 
 namespace kate.shared.Helpers
 {
+#if NET8_0_OR_GREATER == false
     public class DynamicDeserializer
     {
         private static VersionConfigToNamespaceAssemblyObjectBinder versionBinder;
-        private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter;
+        private static BinaryFormatter formatter;
 
 
         private static void Initialize()
         {
             versionBinder = new VersionConfigToNamespaceAssemblyObjectBinder();
-            formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            formatter = new BinaryFormatter();
             formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
             formatter.Binder = versionBinder;
             
@@ -99,5 +100,5 @@ namespace kate.shared.Helpers
 
         #endregion
     }
-
+#endif
 }
