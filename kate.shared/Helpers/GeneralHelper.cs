@@ -61,9 +61,12 @@ namespace kate.shared.Helpers
         /// <summary>
         /// Fetch an embedded resource from the assembly provided.
         /// </summary>
-        /// <returns>null when not found</returns>
+        /// <returns><see langword="null"/> when not found</returns>
         public static string GetEmbeddedResourceAsString(string resourceName, Assembly assembly)
         {
+            if (!EmbeddedResourceExists(resourceName, assembly))
+                return null;
+
             string data = null;
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
