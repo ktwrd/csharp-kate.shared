@@ -111,6 +111,14 @@ namespace kate.shared.Helpers
         /// <returns>Uppercase SHA256 Hash in Hexadecimal.</returns>
         public static string CreateSha256Hash(byte[] content)
         {
+            using (var ms = new MemoryStream(content))
+            {
+                return CreateSha256Hash(ms);
+            }
+        }
+        /// <inheritdoc cref="CreateSha256Hash(byte[])"/>
+        public static string CreateSha256Hash(Stream content)
+        {
             using (SHA256 hash = SHA256.Create())
             {
                 var bytes = hash.ComputeHash(content);
@@ -119,7 +127,7 @@ namespace kate.shared.Helpers
                 {
                     builder.Append(bytes[i].ToString("x2"));
                 }
-                return builder.ToString();
+                return builder.ToString().ToUpper();
             }
         }
         /// <inheritdoc cref="CreateSha256Hash(byte[])"/>
