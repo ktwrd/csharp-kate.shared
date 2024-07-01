@@ -35,6 +35,39 @@ namespace kate.shared.Extensions
             return attributes?.Length > 0 ? attributes[0].Description : string.Empty;
         }
         /// <summary>
+        /// Parse a string (that is a byte array in hexadecimal) to a byte
+        /// array.
+        /// </summary>
+        /// <param name="value">String that is hexadecimal.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Thrown when the length of
+        /// <paramref name="value"/> is an odd number.</exception>
+        public static byte[] ParseToByteArray(this string value)
+        {
+            if (value == "System.Byte[]")
+            {
+                return Array.Empty<byte>();
+            }
+            string hex = $"{value}";
+            if (hex.Length % 2 == 1)
+                throw new Exception("The binary key cannot have an odd number of digits");
+
+            var pad = hex.IndexOf('x');
+            if (pad != -1)
+            {
+                hex = hex.Substring(pad + 1);
+            }
+
+            byte[] arr = new byte[hex.Length >> 1];
+
+            for (int i = 0; i < hex.Length >> 1; ++i)
+            {
+                arr[i] = (byte)((hex[i << 1].GetHexVal() << 4) + hex[(i << 1) + 1].GetHexVal());
+            }
+
+            return arr;
+        }
+        /// <summary>
         /// Parse the character (that is [0-9a-fA-F], hex) as an <see cref="int"/>.
         /// </summary>
         public static int GetHexVal(this char hex)
