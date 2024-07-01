@@ -34,5 +34,18 @@ namespace kate.shared.Extensions
                .GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes?.Length > 0 ? attributes[0].Description : string.Empty;
         }
+        /// <summary>
+        /// Parse the character (that is [0-9a-fA-F], hex) as an <see cref="int"/>.
+        /// </summary>
+        public static int GetHexVal(this char hex)
+        {
+            int val = (int)hex;
+            //For uppercase A-F letters:
+            //return val - (val < 58 ? 48 : 55);
+            //For lowercase a-f letters:
+            //return val - (val < 58 ? 48 : 87);
+            //Or the two combined, but a bit slower:
+            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
+        }
     }
 }
