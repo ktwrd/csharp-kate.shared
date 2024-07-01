@@ -78,6 +78,26 @@ namespace kate.shared.Helpers
             return data;
         }
         /// <summary>
+        /// Check if the embedded resource in <paramref name="assembly"/> exists.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource. Example; <code>SQLTool.Shared.Scripts.DeIdentify_TMS_Drop.sql</code></param>
+        /// <param name="assembly">Assembly to search for the Resource in.</param>
+        /// <returns><see langword="true"/> when it does exist, <see langword="false"/> when it couldn't be found.</returns>
+        public static bool EmbeddedResourceExists(string resourceName, Assembly assembly)
+        {
+            if (assembly == null)
+                return false;
+            var names = assembly.GetManifestResourceNames();
+            foreach (var x in names)
+            {
+                if (x == resourceName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
         /// Convert an array of bytes to hexadecimal.
         /// </summary>
         public static string ToHex(byte[] data)
