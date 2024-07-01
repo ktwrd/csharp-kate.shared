@@ -819,12 +819,12 @@ namespace kate.shared.Helpers
             return dotIndex == -1 ? filepath : filepath.Substring(0, dotIndex);
         }
 
-        public static string FormatHeader(string content, int screenWidth = 80)
+        public static string FormatHeader(string content, int screenWidth = 80, char padChar = '=')
         {
             int halfWidth = Convert.ToInt32(Math.Floor(screenWidth / 2.0f));
             int padcount = Convert.ToInt32(Math.Round(content.Length / 2.0f));
-            string res = content.PadLeft(halfWidth + padcount, '=');
-            res = res.PadRight(screenWidth, '=');
+            string res = content.PadLeft(halfWidth + padcount, padChar);
+            res = res.PadRight(screenWidth, padChar);
             return res;
         }
 
