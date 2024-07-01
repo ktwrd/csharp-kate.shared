@@ -854,21 +854,43 @@ namespace kate.shared.Helpers
             return res;
         }
 
+        #region Base64
         /// <summary>
-        /// Encode a string into Base64 (UTF8)
+        /// Encode an array of bytes into a Base64 string.
+        /// </summary>
+        public static string Base64Encode(byte[] data)
+        {
+            return Convert.ToBase64String(data);
+        }
+        /// <summary>
+        /// Encode a string (as UTF8) into a Base64 string.
         /// </summary>
         public static string Base64Encode(string data)
         {
-            var bytes = Encoding.UTF8.GetBytes(data);
-            return Convert.ToBase64String(bytes);
+            return Base64Encode(Encoding.UTF8.GetBytes(data));
         }
         /// <summary>
-        /// Decode a Base64 UTF8 encoded string
+        /// Decode a Base64 string into a UTF8 Encoded string.
         /// </summary>
-        public static string Base64Decode(string base64Data)
+        public static string Base64Decode(string data)
         {
-            var encodedBytes = Convert.FromBase64String(base64Data);
+            var encodedBytes = Convert.FromBase64String(data);
             return Encoding.UTF8.GetString(encodedBytes);
         }
+        /// <summary>
+        /// Regex statement to validate Base64 strings.
+        /// </summary>
+        public const string RegexValidateBase64 = @"^[-A-Za-z0-9+/=]|=[^=]|={3,}$";
+        /// <summary>
+        /// Check if <paramref name="value"/> is valid, with <see cref="RegexValidateBase64"/>
+        /// </summary>
+        /// <param name="value">Value to validate.</param>
+        /// <returns>Whatever <see cref="Regex.IsMatch(string)"/> returns.</returns>
+        public static bool IsBase64Valid(string value)
+        {
+            var rx = new Regex(RegexValidateBase64);
+            return rx.IsMatch(value.Trim());
+        }
+        #endregion
     }
 }
