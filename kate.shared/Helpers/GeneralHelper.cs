@@ -78,6 +78,29 @@ namespace kate.shared.Helpers
             return data;
         }
         /// <summary>
+        /// Fetch an embedded resource from the assembly provided as a <see cref="MemoryStream"/>
+        /// </summary>
+        /// <returns>Will return <see langword="null"/> when not found.</returns>
+        public static MemoryStream GetEmbeddedResourceAsMemoryStream(string resourceName, Assembly assembly)
+        {
+            if (!EmbeddedResourceExists(resourceName, assembly))
+                return null;
+
+            MemoryStream ms = null;
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                        ms = new MemoryStream();
+                        stream.CopyTo(ms);
+                    }
+                }
+            }
+            return ms;
+        }
+        /// <summary>
         /// Check if the embedded resource in <paramref name="assembly"/> exists.
         /// </summary>
         /// <param name="resourceName">Name of the resource. Example; <code>SQLTool.Shared.Scripts.DeIdentify_TMS_Drop.sql</code></param>
