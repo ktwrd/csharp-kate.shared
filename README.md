@@ -6,10 +6,9 @@ A collection of code that I frequently use in my personal projects, and work pro
 ## Supported .NET Versions
 | Version           | Status             |
 | ----------------- | ------------------ |
+| 9.x               | **Working**        |
 | 8.x (recommended) | **Working**        |
-| 7.x               | **Working**        |
 | 6.x               | **Working**        |
-| 5.x               | **Working**        |
 | Framework 4.x     | **Working**        |
 | Framework 3.x     | Not Tested         |
 | Framework 2.x     | Not Tested         |
