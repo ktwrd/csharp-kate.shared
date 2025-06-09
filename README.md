@@ -1,5 +1,5 @@
 # kate.shared
-kate's C# Shared Resources!
+kate's C# Shared Library!
 
 A collection of code that I frequently use in my personal projects, and work projects.
 

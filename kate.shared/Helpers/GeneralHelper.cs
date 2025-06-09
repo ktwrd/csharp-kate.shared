@@ -123,13 +123,15 @@ namespace kate.shared.Helpers
             }
             return false;
         }
+        
         /// <summary>
-        /// Convert an array of bytes to hexadecimal.
+        /// Convert an array of bytes to hexadecimal characters.
         /// </summary>
         public static string ToHex(byte[] data)
         {
             return BitConverter.ToString(data).Replace("-", "");
         }
+
         /// <summary>
         /// Create a SHA256 based off the <paramref name="content"/> provided.
         /// </summary>
@@ -182,7 +184,7 @@ namespace kate.shared.Helpers
         /// Allocates a new console for the calling process.
         /// </summary>
         /// <returns>
-        /// When `false`, the function has failed. You can call <see href="https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</see> to get more details.</returns>
+        /// When <see langword="false"/>, the function has failed. You can call <see href="https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</see> to get more details.</returns>
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool AllocConsole();
@@ -235,6 +237,7 @@ namespace kate.shared.Helpers
 
             return string.Join(lineEnding, lines);
         }
+        
         /// <summary>
         /// Trim an Array to make sure it's length doesn't exceed the <paramref name="length"/> provided.
         /// </summary>
@@ -298,7 +301,7 @@ namespace kate.shared.Helpers
         public static List<T> GetEnumList<T>()
         {
             T[] array = (T[])Enum.GetValues(typeof(T));
-            List<T> list = new List<T>(array);
+            var list = new List<T>(array);
             return list;
         }
         /// <summary>
@@ -322,11 +325,19 @@ namespace kate.shared.Helpers
         /// <summary>
         /// Get microseconds from <see cref="Stopwatch.GetTimestamp"/>
         /// </summary>
-        /// <returns></returns>
         public static long GetMicroseconds()
         {
             double timestamp = Stopwatch.GetTimestamp();
             double microseconds = 1_000_000.0 * timestamp / Stopwatch.Frequency;
+            return (long)microseconds;
+        }
+        /// <summary>
+        /// Get milliseconds from <see cref="Stopwatch.GetTimestamp"/>
+        /// </summary>
+        public static long GetMilliseconds()
+        {
+            double timestamp = Stopwatch.GetTimestamp();
+            double microseconds = 1_000.0 * timestamp / Stopwatch.Frequency;
             return (long)microseconds;
         }
         public static string ToBase62(ulong number)
@@ -735,7 +746,7 @@ namespace kate.shared.Helpers
         /// </summary>
         public static string GetExtension(string filename)
         {
-            return Path.GetExtension(filename).Trim('.').ToLower();
+            return Path.GetExtension(filename).TrimStart('.').ToLower();
         }
 
         public static int GetMaxPathLength(string directory)
@@ -812,7 +823,6 @@ namespace kate.shared.Helpers
             string backupFilename = filename + @"." + DateTime.Now.Ticks + @".bak";
             if (File.Exists(filename) && !File.Exists(backupFilename))
             {
-                // Debug.Log(@"Backup created: " + backupFilename);
                 File.Move(filename, backupFilename);
             }
         }
@@ -826,23 +836,6 @@ namespace kate.shared.Helpers
                 throw new ArgumentException(path + " isn't contained in " + folder);
 
             return path.Substring(folder.Length + 1);
-        }
-
-        public static string GetTempPath(string suffix = "")
-        {
-            string directory = Path.Combine(Path.GetTempPath(), @"osu!");
-            Directory.CreateDirectory(directory);
-            return Path.Combine(directory, suffix);
-        }
-
-        /// <summary>
-        /// Returns the path without the extension of the file.
-        /// Contrarily to Path.GetFileNameWithoutExtension, it keeps the path to the file ("sb/triangle.png" becomes "sb/triangle" and not "triangle")
-        /// </summary>
-        public static string StripExtension(string filepath)
-        {
-            int dotIndex = filepath.LastIndexOf('.');
-            return dotIndex == -1 ? filepath : filepath.Substring(0, dotIndex);
         }
 
         public static string FormatHeader(string content, int screenWidth = 80, char padChar = '=')

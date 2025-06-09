@@ -4,7 +4,9 @@
 	  <TargetFrameworks>netstandard2.1;net48;net6.0;net8.0;net9.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Kate's Utility Library</Title>
+    <Version>1.3.0</Version>
+
+    <Title>Kate's Shared Library</Title>
     <Authors>$(AssemblyName)</Authors>
     <PackageProjectUrl>https://github.com/ktwrd/csharp-kate.shared</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -15,7 +17,6 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <Version>1.3.0</Version>
     <UserSecretsId>e29538d2-b40d-4a48-bc10-89cfa4af1c82</UserSecretsId>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
