@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netstandard2.1;net48;net6.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net48;net6.0;net8.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>1.4.0</Version>
 
-    <Title>Kate's Shared Library</Title>
+    <Title>Kate's Shared Library - System.CommandLine Utilities</Title>
     <Authors>$(AssemblyName)</Authors>
     <PackageProjectUrl>https://github.com/ktwrd/csharp-kate.shared</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -17,8 +17,6 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <UserSecretsId>e29538d2-b40d-4a48-bc10-89cfa4af1c82</UserSecretsId>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 
 </Project>
