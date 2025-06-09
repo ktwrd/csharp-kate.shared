@@ -18,6 +18,7 @@ namespace kate.shared.Helpers
         /// Format the duration between <paramref name="start"/> and the current date (using <see cref="DateTimeOffset.UtcNow"/>
         /// </summary>
         /// <returns><see cref="FormatDuration(TimeSpan)"/></returns>
+        [Obsolete("Use kate.shared.Helpers.FormatHelper.DurationToUtcNow(DateTimeOffset)")]
         public static string GenerateTaskDuration(DateTimeOffset start)
         {
             var end = DateTimeOffset.UtcNow;
@@ -28,6 +29,7 @@ namespace kate.shared.Helpers
         /// <summary>
         /// Will format a timespan to `HH:MM:ss.sss` or `ss.sss seconds`.
         /// </summary>
+        [Obsolete("Use kate.shared.Helpers.FormatHelper.Duration(TimeSpan)")]
         public static string FormatDuration(TimeSpan duration)
         {
             var st = new List<string>();
