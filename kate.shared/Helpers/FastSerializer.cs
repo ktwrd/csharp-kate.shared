@@ -10,6 +10,7 @@ using System.Threading;
 namespace kate.shared.Helpers
 {
 #if NET8_0_OR_GREATER == false
+    [Obsolete("Removed in v1.5")]
     public enum ObjectType : byte
     {
         nullType,
@@ -36,6 +37,7 @@ namespace kate.shared.Helpers
 
     /// <summary> SerializationWriter.  Extends BinaryWriter to add additional data types,
     /// handle null strings and simplify use with ISerializable. </summary>
+    [Obsolete("Removed in v1.5")]
     public class SerializationWriter : BinaryWriter
     {
         public SerializationWriter(Stream s)
@@ -294,6 +296,7 @@ namespace kate.shared.Helpers
 
     /// <summary> SerializationReader.  Extends BinaryReader to add additional data types,
     /// handle null strings and simplify use with ISerializable. </summary>
+    [Obsolete("Removed in v1.5")]
     public class SerializationReader : BinaryReader
     {
         public SerializationReader(Stream s)

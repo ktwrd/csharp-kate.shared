@@ -11,7 +11,9 @@ using Timer = System.Threading.Timer;
 
 namespace kate.shared
 {
+    [Obsolete("Removed in v1.5")]
     public delegate void DebugLogDelegate(DebugListener instance);
+    [Obsolete("Removed in v1.5")]
     public class DebugListener
     {
         public pTraceListener Listener;
@@ -61,6 +63,8 @@ namespace kate.shared
             return false;
         }
     }
+
+    [Obsolete("Removed in v1.5")]
     public class pTraceListener : TraceListener
     {
         private DebugListener debugListener;

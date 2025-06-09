@@ -6,6 +6,7 @@ using System.Text;
 namespace kate.shared.Helpers
 {
 #if NET8_0_OR_GREATER == false
+    [Obsolete("Removed in v1.5")]
     public class DatabaseHelper
     {
         public delegate void ReadHandler(SerializationReader reader);
