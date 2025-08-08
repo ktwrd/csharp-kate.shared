@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.1;net48;net6.0;net8.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.4.0.1</Version>
+    <Version>1.5.0</Version>
 
     <Title>Kate's Shared Library - System.CommandLine Utilities</Title>
     <Copyright>Copyright 2022-2025 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
