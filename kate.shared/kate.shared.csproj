@@ -4,10 +4,11 @@
 	  <TargetFrameworks>netstandard2.1;net48;net6.0;net8.0;net9.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
 
     <Title>Kate's Shared Library</Title>
-    <Authors>$(AssemblyName)</Authors>
+    <Copyright>Copyright 2022-2025 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
+    <Authors>Kate Ward &lt;kate@dariox.club&gt;</Authors>
     <PackageProjectUrl>https://github.com/ktwrd/csharp-kate.shared</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ktwrd/csharp-kate.shared</RepositoryUrl>
