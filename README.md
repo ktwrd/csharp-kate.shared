@@ -1,4 +1,7 @@
 # kate.shared
+
+![license](https://img.shields.io/github/license/ktwrd/csharp-kate.shared) [![kate.shared - version](https://img.shields.io/github/v/tag/ktwrd/csharp-kate.shared?sort=date&label=latest%20version)](https://nuget.org/packages/kate.shared) [![kate.shared.CommandLine - version](https://img.shields.io/nuget/v/kate.shared.CommandLine?label=kate.shared.CommandLine)](https://nuget.org/packages/kate.shared.CommandLine) [![kate.shared.EtoForms - version](https://img.shields.io/nuget/v/kate.shared.EtoForms?label=kate.shared.EtoForms)](https://nuget.org/packages/kate.shared.EtoForms)
+
 kate's C# Shared Library!
 
 A series of utility/helper classes to make my life easier with rapidly developing projects at home, and at work.
