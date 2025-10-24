@@ -84,30 +84,4 @@ namespace kate.shared.CommandLine
             HelpText = string.IsNullOrEmpty(helpText) ? "" : helpText;
         }
     }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
-    public class ActionParameterAliasAttribute : Attribute
-    {
-        public ActionParameterAliasAttribute(string alias, ActionParameterAliasKind kind)
-        {
-            Alias = alias;
-            CustomPrefix = null;
-            Kind = kind;
-        }
-        public ActionParameterAliasAttribute(string alias)
-            : this(alias, ActionParameterAliasKind.DoubleDash)
-        {
-        }
-        public string Alias { get; set; }
-        public string CustomPrefix { get; set; }
-        public ActionParameterAliasKind Kind { get; set; }
-    }
-
-    public enum ActionParameterAliasKind
-    {
-        NoPrefix,
-        SingleDash,
-        DoubleDash,
-        Custom
-    }
 }
