@@ -24,7 +24,7 @@ A series of utility/helper classes to make my life easier with rapidly developin
 | Core 1.x               | ⚠️ | ❌ | ❌ |
 
 **Notes**
-- .NET Framework 4.x to 2.x, and .NET Core 3.x to 1.x are inferred since `kate.shared` it targets `netstandard2.0`.
+- .NET Framework 4.x to 2.x, and .NET Core 3.x to 1.x are inferred since `kate.shared` targets `netstandard2.0`.
 
 ## License
 The code for `kate.shared` and all projects in this repository are licensed under the [Apache 2.0 License](https://opensource.org/licenses/Apache-2.0). Please see [the license file](LICENSE.md) FOR MORE INFORMATION.
