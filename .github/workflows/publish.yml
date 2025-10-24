@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        project: ['kate.shared', 'kate.shared.CommandLine', 'kate.shared.EtoForms']
+        project: ['kate.shared']
     name: Create NuGet Package
     permissions:
       packages: write
@@ -37,6 +37,44 @@ jobs:
         run: dotnet nuget add source https://nuget.pkg.github.com/ktwrd/index.json --name "GPR" --username ktwrd --password ${{ secrets.GITHUB_TOKEN }}
       - name: Add Gitea registry to NuGet
         run: dotnet nuget add source https://git.redfur.cloud/api/packages/kate/nuget/index.json --name "Gitea" --username kate --password ${{ secrets.GITEA_TOKEN }}
+        
+      - name: Push generated package to GitHub registry
+        run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
+      
+      - name: Push generated package to Gitea registry
+        run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
+
+  build-others:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        project: ['kate.shared.CommandLine', 'kate.shared.EtoForms']
+    name: Create NuGet Package
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.x
+            8.x
+            9.x
+        
+      - name: Add private GitHub registry to NuGet
+        run: dotnet nuget add source https://nuget.pkg.github.com/ktwrd/index.json --name "GPR" --username ktwrd --password ${{ secrets.GITHUB_TOKEN }}
+      - name: Add Gitea registry to NuGet
+        run: dotnet nuget add source https://git.redfur.cloud/api/packages/kate/nuget/index.json --name "Gitea" --username kate --password ${{ secrets.GITEA_TOKEN }}
+          
+      - name: Build solution and generate NuGet package
+        run: |  
+          cd ${{ matrix.project }}
+          dotnet build -c Release
+          dotnet pack -c Release -o out --include-symbols
         
       - name: Push generated package to GitHub registry
         run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
