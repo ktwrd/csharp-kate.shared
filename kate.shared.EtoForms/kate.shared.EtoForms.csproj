@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.5.0</Version>
+    <Version>1.5.1</Version>
 
     <Title>Kate's Shared Library - Eto.Forms</Title>
     <Copyright>Copyright 2022-2025 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
@@ -28,15 +28,16 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include=".\CHANGELOG.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.9.0" />
     <PackageReference Include="Svg" Version="3.4.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\kate.shared\kate.shared.csproj" />
+    <PackageReference Include="kate.shared" Version="1.5.1" />
   </ItemGroup>
 
   <Choose>
