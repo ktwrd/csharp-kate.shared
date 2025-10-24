@@ -46,6 +46,7 @@ jobs:
 
   build-others:
     runs-on: windows-latest
+    needs: build
     strategy:
       matrix:
         project: ['kate.shared.CommandLine', 'kate.shared.EtoForms']
