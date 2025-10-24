@@ -42,6 +42,9 @@ namespace kate.shared.CommandLine
         /// Is this parameter required? (Default: <see langword="true"/>)
         /// </summary>
         public bool IsRequired { get; set; } = true;
+        
+        /// <inheritdoc cref="System.CommandLine.Option.AllowMultipleArgumentsPerToken"/>
+        public bool AllowMultipleArgumentsPerToken { get; set; }
 
         public ActionParameterAttribute(string name, string helpText)
             : this(name, true, helpText)
@@ -56,15 +59,17 @@ namespace kate.shared.CommandLine
             }
 
             Name = name;
+            ShortNameAlias = "";
             IsRequired = required;
             HelpText = string.IsNullOrEmpty(helpText) ? "" : helpText;
+            AllowMultipleArgumentsPerToken = false;
         }
 
-        public ActionParameterAttribute(Nullable<char> shortName, string name, string helpText)
+        public ActionParameterAttribute(char shortName, string name, string helpText)
             : this(shortName, name, true, helpText)
         { }
 
-        public ActionParameterAttribute(Nullable<char> shortName, string name, bool required, string helpText)
+        public ActionParameterAttribute(char shortName, string name, bool required = false, string helpText = "")
             : base()
         {
             if (string.IsNullOrEmpty(name))
@@ -72,11 +77,37 @@ namespace kate.shared.CommandLine
                 throw new ArgumentNullException(nameof(name), "Cannot be null or empty");
             }
             Name = name;
-            ShortNameAlias = shortName == null || !shortName.HasValue
-                ? null
-                : shortName.ToString();
+            ShortNameAlias = shortName.ToString();
+            if (string.IsNullOrEmpty(ShortNameAlias))
+                ShortNameAlias = "";
             IsRequired = required;
             HelpText = string.IsNullOrEmpty(helpText) ? "" : helpText;
         }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
+    public class ActionParameterAliasAttribute : Attribute
+    {
+        public ActionParameterAliasAttribute(string alias, ActionParameterAliasKind kind)
+        {
+            Alias = alias;
+            CustomPrefix = null;
+            Kind = kind;
+        }
+        public ActionParameterAliasAttribute(string alias)
+            : this(alias, ActionParameterAliasKind.DoubleDash)
+        {
+        }
+        public string Alias { get; set; }
+        public string CustomPrefix { get; set; }
+        public ActionParameterAliasKind Kind { get; set; }
+    }
+
+    public enum ActionParameterAliasKind
+    {
+        NoPrefix,
+        SingleDash,
+        DoubleDash,
+        Custom
     }
 }

@@ -4,7 +4,7 @@
     <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.5.0</Version>
+    <Version>1.6.0</Version>
 
     <Title>Kate's Shared Library - System.CommandLine Utilities</Title>
     <Copyright>Copyright 2022-2025 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
   </ItemGroup>
 
 </Project>
