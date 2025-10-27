@@ -1,3 +1,7 @@
+## v1.6.2 (27th Oct, 2025)
+
+- Fixed reflection bugs when setting default value for options.
+
 ## v1.6.1 (27th Oct, 2025)
 
 - Fixed non-string default values not working for options.

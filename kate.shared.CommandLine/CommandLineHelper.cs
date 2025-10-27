@@ -183,23 +183,25 @@ namespace kate.shared.CommandLine
                     }
                 }
             }
-
             void SetDefaultValue(
                 PropertyInfo prop,
                 Type argumentInstanceType,
                 object argumentInstance)
             {
-                var defaultValueAttr = prop.GetCustomAttribute<DefaultValueAttribute>();
-                if (defaultValueAttr != null)
+                var delMethod = typeof(CommandLineHelper).GetMethod(nameof(GetDefaultValueDelegate), BindingFlags.NonPublic | BindingFlags.Static);
+                var delGen = delMethod.MakeGenericMethod(prop.PropertyType);
+                var del = delGen.Invoke(null, new object[] { prop });
+                if (del != null)
                 {
                     var defaultValueProperty = argumentInstanceType.GetProperty("DefaultValueFactory",
                         BindingFlags.Public | BindingFlags.Instance);
                     if (defaultValueProperty == null)
                         throw new InvalidOperationException(
                             $"Could not find property DefaultValueFactory on type {argumentInstanceType}");
-                    defaultValueProperty.SetValue(argumentInstance, (ArgumentResult _) => defaultValueAttr.Value);
+                    defaultValueProperty.SetValue(argumentInstance, del);
                 }
             }
+
             string[] GenerateAliases(
                 PropertyInfo prop)
             {
@@ -437,6 +439,13 @@ namespace kate.shared.CommandLine
         private static string FormatTypeName(Type type)
         {
             return type.Namespace + '.' + type.Name;
+        }
+
+        private static Func<ArgumentResult, T> GetDefaultValueDelegate<T>(PropertyInfo prop)
+        {
+            var defaultValueAttr = prop.GetCustomAttribute<DefaultValueAttribute>();
+            if (defaultValueAttr == null) return null;
+            return (ArgumentResult _) => (T)defaultValueAttr.Value;
         }
     }
 }
