@@ -197,7 +197,7 @@ namespace kate.shared.CommandLine
                     if (defaultValueProperty == null)
                         throw new InvalidOperationException(
                             $"Could not find property DefaultValueFactory on type {argumentInstanceType}");
-                    defaultValueProperty.SetValue(argumentInstance, (ArgumentResult _) => defaultValueAttr.Value?.ToString());
+                    defaultValueProperty.SetValue(argumentInstance, (ArgumentResult _) => defaultValueAttr.Value);
                 }
             }
             string[] GenerateAliases(

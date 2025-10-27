@@ -1,3 +1,7 @@
+## v1.6.1 (27th Oct, 2025)
+
+- Fixed non-string default values not working for options.
+
 ## v1.6.0 (24th Oct, 2025)
 
 >[!IMPORTANT]
