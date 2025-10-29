@@ -24,7 +24,7 @@ namespace kate.shared.Extensions
     /// <summary>
     /// Extensions for strings.
     /// </summary>
-    public static class StringExtension
+    public static class StringExtensions
     {
         /// <summary>
         /// Split a string by a separator.
