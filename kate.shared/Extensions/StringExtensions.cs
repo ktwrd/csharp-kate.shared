@@ -27,6 +27,53 @@ namespace kate.shared.Extensions
     public static class StringExtensions
     {
         /// <summary>
+        /// Read the lines from a string. Currently supports; LF, CR, and CRLF.
+        /// </summary>
+        /// <returns>List of strings with the parsed lines.</returns>
+        public static IList<string> ParseLines(this string content)
+        {
+            var lines = new List<string>();
+            var sb = new StringBuilder();
+
+            var previousChar = (char)0;
+            const char lf = (char)10;
+            const char cr = (char)13;
+            for (int i = 0; i < content.Length; i++)
+            {
+                var c = content[i];
+                // not any form of line ending, which means
+                // it's safe to append to working string.
+                if (c != cr && c != lf)
+                {
+                    sb.Append(c);
+                }
+
+                switch (c)
+                {
+                    // current char is LF and previous isn't CR
+                    // that way we know it's just LF line endings
+                    // and not CRLF line endings
+                    case lf when previousChar != cr:
+                        lines.Add(sb.ToString());
+                        sb.Clear();
+                        break;
+                    // always safe to add CR line endings
+                    // since in all common line endings,
+                    // CR is before LF or LF doesn't exist
+                    // at all so it's just CR.
+                    case cr:
+                        lines.Add(sb.ToString());
+                        sb.Clear();
+                        break;
+                }
+
+                previousChar = c;
+            }
+            lines.Add(sb.ToString());
+            return lines;
+        }
+    
+        /// <summary>
         /// Split a string by a separator.
         /// </summary>
         /// <param name="value">String</param>
