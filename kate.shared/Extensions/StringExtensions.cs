@@ -96,6 +96,7 @@ namespace kate.shared.Extensions
         /// <summary>
         /// Parse the character (that is [0-9a-fA-F], hex) as an <see cref="int"/>.
         /// </summary>
+        /// <exception cref="ArgumentException">Thrown when value isn't 0-9 or a-f (case-insensitive).</exception>
         public static int GetHexVal(this char hex)
         {
             int val = (int)hex;
@@ -104,7 +105,10 @@ namespace kate.shared.Extensions
             //For lowercase a-f letters:
             //return val - (val < 58 ? 48 : 87);
             //Or the two combined, but a bit slower:
-            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
+            var result = val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
+            if (result > 16)
+                throw new ArgumentException("Value is not valid hexadecimal since it is greater than 15 (got char: \"" + hex + "\" got number: " + result + ", min: 0, max: 15)");
+            return result;
         }
     }
 }
