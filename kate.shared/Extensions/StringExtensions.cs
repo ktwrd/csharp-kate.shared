@@ -98,6 +98,7 @@ namespace kate.shared.Extensions
                .GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes?.Length > 0 ? attributes[0].Description : fallback;
         }
+
         /// <summary>
         /// Get the value of the <see cref="DescriptionAttribute"/> on an object, if it is on it.
         /// </summary>
@@ -115,6 +116,7 @@ namespace kate.shared.Extensions
         /// <returns></returns>
         /// <exception cref="Exception">Thrown when the length of
         /// <paramref name="value"/> is an odd number.</exception>
+        [Obsolete("Use extension method ParseAsHexadecimal(this string)")]
         public static byte[] ParseToByteArray(this string value)
         {
             if (value == "System.Byte[]")
@@ -141,6 +143,85 @@ namespace kate.shared.Extensions
             return arr;
         }
 
+        /// <summary>
+        /// Parse a string (that is a byte array in hexadecimal, like <c>0x00</c> or <c>00</c>)
+        /// to a byte array.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// Result will be an empty array when <paramref name="value"/> is <see langword="null"/> or empty.
+        /// Otherwise, the parsed array will be returned (e.g, value <c>0xaaff</c> will return an array like <c>[177, 255]</c>).
+        /// </returns>
+        /// 
+        /// <exception cref="ArgumentException">
+        /// Thrown when the length of the real string is not an even number.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when something went wrong while parsing two characters to a byte. The positions may be incorrect since 
+        /// </exception>
+        /// 
+        /// <remarks>
+        /// <para>
+        /// When reading the <paramref name="value"/>, it is converted into a "real" string.
+        /// This "real" string is trimmed, then anything before the first occupance of <c>x</c> (including that char)
+        /// is ignored when parsing it to a byte array.
+        /// </para>
+        /// 
+        /// <para>As an example, the real string of <c>0x003</c> would actually be <c>003</c></para>
+        /// 
+        /// <para>When the <paramref name="value"/> is null, empty, or equal to <c>System.Byte[]</c>, then an empty array will be returned.</para>
+        /// </remarks>
+        public static byte[] ParseAsHexadecimal(this string value)
+        {
+            if (value == null || string.IsNullOrEmpty(value.Trim()) || value == "System.Byte[]")
+            {
+                return Array.Empty<byte>();
+            }
+
+            value = value.TrimWithOffsets(out var removedFromStart, out var removedFromEnd);
+
+            var pad = value.IndexOf('x');
+            if (pad == -1) pad = value.IndexOf('X');
+            var start = 0;
+            if (pad != -1)
+            {
+                start = pad + 1;
+            }
+
+            var arrayLength = value.Length - start;
+            byte[] arr = new byte[arrayLength >> 1];
+
+            for (int i = start; i < value.Length >> 1; ++i)
+            {
+                char? ca = null;
+                char? cb = null;
+                try
+                {
+                    ca = value[i << 1];
+                    cb = value[(i << 1) + 1];
+                    arr[i - start] = (byte)((ca.Value.GetHexVal() << 4) + cb.Value.GetHexVal());
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("Failed to parse characters " + ca + "," + cb + "  at positions " + (i << 1) + removedFromStart + "," + ((i << 1) + 1) + removedFromStart, ex);
+                }
+            }
+
+            return arr;
+        }
+
+        public static string TrimWithOffsets(this string value, out int removedFromStart, out int removedFromEnd)
+        {
+            var previousLength = value.Length;
+            var result = value.TrimEnd();
+            removedFromEnd = previousLength - result.Length;
+
+            previousLength = result.Length;
+            result = result.TrimStart();
+            removedFromStart = previousLength - result.Length;
+            return result;
+        }
+        
         /// <summary>
         /// Trim <paramref name="value"/> when it is not <see langword="null"/>.
         /// </summary>
