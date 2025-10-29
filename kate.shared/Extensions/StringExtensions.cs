@@ -93,6 +93,18 @@ namespace kate.shared.Extensions
 
             return arr;
         }
+
+        /// <summary>
+        /// Trim <paramref name="value"/> when it is not <see langword="null"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string TrimOrNull(this string value)
+        {
+            if (value == null) return null;
+            return value.Trim();
+        }
+
         /// <summary>
         /// Parse the character (that is [0-9a-fA-F], hex) as an <see cref="int"/>.
         /// </summary>
