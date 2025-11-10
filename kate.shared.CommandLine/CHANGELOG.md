@@ -1,3 +1,7 @@
+## v1.6.3 (10th Nov, 2025)
+
+- Set value for `System.CommandLine.Option.Description` (from `ActionParameterAttribute.HelpText`)
+
 ## v1.6.2 (27th Oct, 2025)
 
 - Fixed reflection bugs when setting default value for options.

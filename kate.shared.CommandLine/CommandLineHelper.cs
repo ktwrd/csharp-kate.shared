@@ -202,6 +202,21 @@ namespace kate.shared.CommandLine
                 }
             }
 
+            void SetDescription(
+                PropertyInfo prop,
+                Type argumentInstanceType,
+                object argumentInstance)
+            {
+                var actionParamAttr = prop.GetCustomAttribute<ActionParameterAttribute>();
+                if (actionParamAttr == null || string.IsNullOrEmpty(actionParamAttr.HelpText)) return;
+                var descriptionProp = argumentInstanceType.GetProperty(nameof(Option.Description));
+                if (descriptionProp == null)
+                {
+                    throw new InvalidOperationException($"Could not find property with name \"{nameof(Option.Description)}\" on type {argumentInstanceType} for property {prop.Name}");
+                }
+                descriptionProp.SetValue(argumentInstance, actionParamAttr.HelpText);
+            }
+
             string[] GenerateAliases(
                 PropertyInfo prop)
             {
@@ -272,6 +287,9 @@ namespace kate.shared.CommandLine
 
                     // set default value
                     SetDefaultValue(prop, genericArgumentType, argumentInstance);
+
+                    // set description
+                    SetDescription(prop, genericArgumentType, argumentInstance);
                     
                     // Set AllowMultipleArgumentsPerToken
                     if (actionParamAttr.AllowMultipleArgumentsPerToken)
