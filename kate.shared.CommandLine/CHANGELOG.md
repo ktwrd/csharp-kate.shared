@@ -1,3 +1,10 @@
+## v1.7.0 (12th Nov, 2025)
+
+- Dropped support for .NET 6
+- Dropped direct support for .NET 9
+- Added support for .NET 10
+- Updated `System.CommandLine` to `2.0.0`
+
 ## v1.6.3 (10th Nov, 2025)
 
 - Set value for `System.CommandLine.Option.Description` (from `ActionParameterAttribute.HelpText`)

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.5.1</Version>
+    <Version>1.7.0</Version>
 
     <Title>Kate's Shared Library - Eto.Forms</Title>
     <Copyright>Copyright 2022-2025 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
@@ -35,20 +35,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eto.Forms" Version="2.9.0" />
+    <PackageReference Include="Eto.Forms" Version="2.10.2" />
     <PackageReference Include="Svg" Version="3.4.7" />
-    <PackageReference Include="kate.shared" Version="1.5.1" />
+    <PackageReference Include="kate.shared" Version="1.7.0" />
   </ItemGroup>
 
   <Choose>
     <When Condition="$([System.OperatingSystem]::IsWindows())">
       <PropertyGroup>
-        <TargetFrameworks>net6.0;net6.0-windows7.0;net8.0;net8.0-windows7.0</TargetFrameworks>
+        <TargetFrameworks>net8.0-windows7.0;net10.0-windows7.0</TargetFrameworks>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
       </PropertyGroup>
     </Otherwise>
   </Choose>

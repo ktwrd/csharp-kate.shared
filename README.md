@@ -11,20 +11,18 @@ A series of utility/helper classes to make my life easier with rapidly developin
 - ⚠️ - Not Tested
 - ❌ - Not Supported
 
-| Supported .NET Version | `kate.shared` | `kate.shared.CommandLine` | `kate.shared.EtoForms` |
-| ---------------------- | ------------- | ------------------------- | ---------------------- |
-| 9.x                    | ✔️ | ✔️ | ⚠️ |
-| 8.x (recommended)      | ✔️ | ✔️ | ✔️ |
-| 6.x                    | ✔️ | ✔️ | ✔️ |
-| Framework 4.x          | ⚠️ | ❌ | ❌ |
-| Framework 3.x          | ⚠️ | ❌ | ❌ | 
-| Framework 2.x          | ⚠️ | ❌ | ❌ |
-| Core 3.x               | ⚠️ | ❌ | ❌ |
-| Core 2.x               | ⚠️ | ❌ | ❌ |
-| Core 1.x               | ⚠️ | ❌ | ❌ |
+| Supported .NET Version | `kate.shared`           | `kate.shared.CommandLine` | `kate.shared.EtoForms` |
+| ---------------------- | ----------------------- | ------------------------- | ---------------------- |
+| .NET 10.x              | ✔️                      | ✔️                       | ✔️                     |
+| .NET 9.x               | ✔️ (via .NET 8)         | ✔️ (via .NET 8)          | ✔️ (via .NET 8)        |
+| .NET 8.x (recommended) | ✔️                      | ✔️                       | ✔️                     |
+| .NET 6.x               | ⚠️ (via netstandard2.0) | ❌                       | ❌                     |
+| Framework 2.x to 4.x   | ⚠️                      | ❌                       | ❌                     |
+| Core 1.x to 3.x        | ⚠️                      | ❌                       | ❌                     |
 
 **Notes**
-- .NET Framework 4.x to 2.x, and .NET Core 3.x to 1.x are inferred since `kate.shared` targets `netstandard2.0`.
+- .NET Framework 4.x to 2.x, and .NET Core 3.x to 1.x, and .NET 6 are inferred since `kate.shared` targets `netstandard2.0`.
+- .NET 9 support is inferred, since all projects target .NET 8
 
 ## License
 The code for `kate.shared` and all projects in this repository are licensed under the [Apache 2.0 License](https://opensource.org/licenses/Apache-2.0). Please see [the license file](LICENSE.md) FOR MORE INFORMATION.
