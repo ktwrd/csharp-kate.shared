@@ -1,3 +1,6 @@
+## v1.7.1 (23rd Jun, 2026)
+- Created (modified) `ExceptionHelper` from XeniaBot project.
+
 ## v1.7.0 (12th Nov, 2025)
 
 - Dropped direct support for .NET 6 (still works, since this is targeting netstandard2.0)

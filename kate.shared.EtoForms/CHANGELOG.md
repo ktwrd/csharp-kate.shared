@@ -1,3 +1,6 @@
+## v1.7.1 (23rd Jun, 2026)
+- Updated `kate.shared` to `1.7.1`
+
 ## v1.7.0 (12th Nov, 2025)
 
 - Dropped support for .NET 6
