@@ -7,7 +7,7 @@
     <Version>1.7.0</Version>
 
     <Title>Kate's Shared Library - System.CommandLine Utilities</Title>
-    <Copyright>Copyright 2022-2025 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
+    <Copyright>Copyright 2022-2026 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
     <Authors>Kate Ward &lt;kate@dariox.club&gt;</Authors>
     <PackageProjectUrl>https://github.com/ktwrd/csharp-kate.shared</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
