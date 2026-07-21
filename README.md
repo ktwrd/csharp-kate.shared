@@ -11,8 +11,7 @@ A series of utility/helper classes to make my life easier with rapidly
 developing projects at home, and at work.
 
 >[!IMPORTANT]
-> Due to how I use this library, things may be removed or added in a whim,
-> but I will try my best to document everything I change in each libraries respective `CHANGELOG.md` files.
+> Since I mostly use all of these libraries for personal use, I might not accept PRs for new enhancements unless I see some purpose in it.
 
 - kate.shared: Platform-agnostic helper classes
   - Embedded Resource exception

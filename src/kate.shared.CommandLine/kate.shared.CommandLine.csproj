@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>1.7.1</Version>
 
-    <Title>Kate's Shared Library</Title>
+    <Title>Kate's Shared Library - System.CommandLine Utilities</Title>
     <Copyright>Copyright 2022-2026 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
     <Authors>Kate Ward &lt;kate@dariox.club&gt;</Authors>
     <PackageProjectUrl>https://github.com/ktwrd/csharp-kate.shared</PackageProjectUrl>
@@ -18,16 +18,14 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <UserSecretsId>e29538d2-b40d-4a48-bc10-89cfa4af1c82</UserSecretsId>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE">
+    <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\README.md">
+    <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -37,8 +35,8 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Text.Json" Version="8.0.6" />
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.*" />
   </ItemGroup>
 
 </Project>
