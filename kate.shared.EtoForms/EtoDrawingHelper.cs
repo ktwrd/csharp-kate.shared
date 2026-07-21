@@ -116,7 +116,7 @@ public static class EtoDrawingHelper
             var imageStart = BitConverter.GetBytes(Convert.ToUInt32(fakePosition));
             var partHeader = new byte[]
             {
-            width, height,
+                width, height,
                 0x00, 0x00,
                 0x01, 0x00,
                 0x20, 0x00, // assume 32bits per-pixel
