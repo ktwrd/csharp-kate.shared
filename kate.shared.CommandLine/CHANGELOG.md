@@ -1,3 +1,7 @@
+## Next Release
+
+- Reference `2.0.*` for package `System.CommandLine`
+
 ## v1.7.0 (12th Nov, 2025)
 
 - Dropped support for .NET 6
