@@ -1,5 +1,8 @@
+## Next Release
+- Moved namespace of `ExceptionHelper` to `kate.shared.Helpers`
+
 ## v1.7.1 (23rd Jun, 2026)
-- Created (modified) `ExceptionHelper` from XeniaBot project.
+- Created (modified) `ExceptionHelper` from the [XeniaBot](https://xenia.kate.pet) project.
 
 ## v1.7.0 (12th Nov, 2025)
 
