@@ -34,10 +34,22 @@
     </None>
   </ItemGroup>
 
+  <Choose>
+    <When Condition="'$(UseLocalSource)' == 'true'">
+      <ItemGroup>
+        <ProjectReference Include="..\kate.shared\kate.shared.csproj" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+        <ItemGroup>
+          <PackageReference Include="kate.shared" Version="1.7.*" />
+        </ItemGroup>
+    </Otherwise>
+  </Choose>
+
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.10.2" />
     <PackageReference Include="Svg" Version="3.4.7" />
-    <PackageReference Include="kate.shared" Version="1.7.*" />
   </ItemGroup>
 
   <Choose>
