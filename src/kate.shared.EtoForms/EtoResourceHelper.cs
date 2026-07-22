@@ -15,6 +15,7 @@
 */
 
 using Eto.Drawing;
+using kate.shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
