@@ -28,7 +28,7 @@ jobs:
           
       - name: Build solution and generate NuGet package
         run: |  
-          cd ${{ matrix.project }}
+          cd src\${{ matrix.project }}
           dotnet build -c Release
           dotnet pack -c Release -o out --include-symbols
         
@@ -38,10 +38,10 @@ jobs:
         run: dotnet nuget add source https://git.redfur.cloud/api/packages/kate/nuget/index.json --name "Gitea" --username kate --password ${{ secrets.GITEA_TOKEN }}
         
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
+        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
       
       - name: Push generated package to Gitea registry
-        run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
+        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
 
   build-others:
     runs-on: windows-latest
@@ -71,12 +71,12 @@ jobs:
           
       - name: Build solution and generate NuGet package
         run: |  
-          cd ${{ matrix.project }}
+          cd src\${{ matrix.project }}
           dotnet build -c Release
           dotnet pack -c Release -o out --include-symbols
         
       - name: Push generated package to GitHub registry
-        run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
+        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
       
       - name: Push generated package to Gitea registry
-        run: dotnet nuget push .\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
+        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
