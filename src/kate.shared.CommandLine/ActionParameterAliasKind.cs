@@ -1,5 +1,5 @@
 /*
-   Copyright 2022-2025 Kate Ward <kate@dariox.club>
+   Copyright 2022-2026 Kate Ward <kate@dariox.club>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,11 +14,14 @@
    limitations under the License.
 */
 
+using JetBrains.Annotations;
+
 namespace kate.shared.CommandLine
 {
     /// <summary>
     /// Kind of alias for <see cref="ActionParameterAliasAttribute"/>
     /// </summary>
+    [PublicAPI]
     public enum ActionParameterAliasKind
     {
         /// <summary>

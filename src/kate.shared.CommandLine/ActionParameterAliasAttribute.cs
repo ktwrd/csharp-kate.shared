@@ -1,5 +1,5 @@
 /*
-   Copyright 2022-2025 Kate Ward <kate@dariox.club>
+   Copyright 2022-2026 Kate Ward <kate@dariox.club>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,17 +15,22 @@
 */
 
 using System;
+using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace kate.shared.CommandLine
 {
     /// <summary>
     /// Define multiple aliases for <see cref="ActionParameterAttribute"/>.
     /// </summary>
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
     public class ActionParameterAliasAttribute : Attribute
     {
         public ActionParameterAliasAttribute(string alias, ActionParameterAliasKind kind)
         {
+            if (string.IsNullOrWhiteSpace(alias))
+                throw new ArgumentException("Value cannot be null or whitespace", nameof(alias));
             Alias = alias;
             CustomPrefix = null;
             Kind = kind;
@@ -36,8 +41,13 @@ namespace kate.shared.CommandLine
         {
         }
 
+        [NotNull]
         public string Alias { get; set; }
+        
+        [CanBeNull]
         public string CustomPrefix { get; set; }
+        
+        [DefaultValue(ActionParameterAliasKind.DoubleDash)]
         public ActionParameterAliasKind Kind { get; set; }
     }
 }

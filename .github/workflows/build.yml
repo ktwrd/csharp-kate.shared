@@ -1,0 +1,52 @@
+name: Build Projects
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    name: Unit Test
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+      - name: Run unit tests
+        run: |
+          dotnet test
+  build:
+    runs-on: windows-latest
+    name: Build Project
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+      - name: Build (debug)
+        run: |
+          dotnet build -c Debug
+      - name: Clean
+        run: |
+          dotnet clean
+      - name: Build (release)
+        run: |
+          dotnet build -c Release

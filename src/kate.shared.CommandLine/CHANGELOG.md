@@ -1,5 +1,12 @@
 ## Next Release
 
+- Add support for generic instances of `IAction`
+    - `IAction` now extends `IAction<object>` to support this change
+- Start working on unit tests for `kate.shared.CommandLine`
+- Add dependency `JetBrains.Annotations` with version `2026.*`
+
+## v1.7.1
+
 - Reference `2.0.*` for package `System.CommandLine`
 
 ## v1.7.0 (12th Nov, 2025)

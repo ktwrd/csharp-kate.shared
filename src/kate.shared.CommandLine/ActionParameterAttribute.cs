@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2022-2025 Kate Ward <kate@dariox.club>
+   Copyright 2022-2026 Kate Ward <kate@dariox.club>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,31 +17,36 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace kate.shared.CommandLine
 {
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class ActionParameterAttribute : Attribute
     {
         /// <summary>
         /// Short-hand argument name, like <c>h</c> for <c>help</c>
         /// </summary>
+        [NotNull]
         public string ShortNameAlias { get; private set; }
 
         /// <summary>
         /// Parameter name, must not start with <c>--</c>
         /// </summary>
+        [NotNull]
         public string Name { get; private set; }
 
         /// <summary>
         /// Help text to display for this parameter.
         /// </summary>
+        [NotNull]
         public string HelpText { get; private set; }
 
         /// <summary>
         /// Is this parameter required? (Default: <see langword="true"/>)
         /// </summary>
-        public bool IsRequired { get; set; } = true;
+        public bool IsRequired { get; set; }
         
         /// <inheritdoc cref="System.CommandLine.Option.AllowMultipleArgumentsPerToken"/>
         public bool AllowMultipleArgumentsPerToken { get; set; }
