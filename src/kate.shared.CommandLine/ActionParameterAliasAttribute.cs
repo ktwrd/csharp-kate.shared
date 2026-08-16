@@ -15,17 +15,22 @@
 */
 
 using System;
+using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace kate.shared.CommandLine
 {
     /// <summary>
     /// Define multiple aliases for <see cref="ActionParameterAttribute"/>.
     /// </summary>
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
     public class ActionParameterAliasAttribute : Attribute
     {
         public ActionParameterAliasAttribute(string alias, ActionParameterAliasKind kind)
         {
+            if (string.IsNullOrWhiteSpace(alias))
+                throw new ArgumentException("Value cannot be null or whitespace", nameof(alias));
             Alias = alias;
             CustomPrefix = null;
             Kind = kind;
@@ -36,8 +41,13 @@ namespace kate.shared.CommandLine
         {
         }
 
+        [NotNull]
         public string Alias { get; set; }
+        
+        [CanBeNull]
         public string CustomPrefix { get; set; }
+        
+        [DefaultValue(ActionParameterAliasKind.DoubleDash)]
         public ActionParameterAliasKind Kind { get; set; }
     }
 }

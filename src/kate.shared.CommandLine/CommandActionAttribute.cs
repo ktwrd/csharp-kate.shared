@@ -15,12 +15,14 @@
 */
 
 using System;
+using JetBrains.Annotations;
 
 namespace kate.shared.CommandLine
 {
     /// <summary>
     /// Required attribute about details for <see cref="IAction"/>
     /// </summary>
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class CommandActionAttribute : Attribute
     {
@@ -28,6 +30,7 @@ namespace kate.shared.CommandLine
         /// Name of the action to use when invoking via command-line.
         /// </summary>
         public string ActionName { get; set; }
+        
         /// <summary>
         /// Type of the class where all the action-specific options are.
         /// </summary>

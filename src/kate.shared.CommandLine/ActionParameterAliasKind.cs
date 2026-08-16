@@ -14,11 +14,14 @@
    limitations under the License.
 */
 
+using JetBrains.Annotations;
+
 namespace kate.shared.CommandLine
 {
     /// <summary>
     /// Kind of alias for <see cref="ActionParameterAliasAttribute"/>
     /// </summary>
+    [PublicAPI]
     public enum ActionParameterAliasKind
     {
         /// <summary>

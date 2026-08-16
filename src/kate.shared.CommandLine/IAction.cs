@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2022-2025 Kate Ward <kate@dariox.club>
+   Copyright 2022-2026 Kate Ward <kate@dariox.club>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 */
 
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace kate.shared.CommandLine
 {
@@ -23,7 +24,19 @@ namespace kate.shared.CommandLine
     ///
     /// Inherited class must have <see cref="CommandActionAttribute"/>
     /// </summary>
-    public interface IAction
+    [PublicAPI]
+    public interface IAction : IAction<object>
+    {
+    }
+
+    /// <summary>
+    /// <para>Inherited by a class that can be used for a CLI action.</para>
+    ///
+    /// Inherited class must have <see cref="CommandActionAttribute"/>
+    /// </summary>
+    [PublicAPI]
+    public interface IAction<T>
+        where T : notnull, new()
     {
         /// <summary>
         /// Run this action.
@@ -31,6 +44,7 @@ namespace kate.shared.CommandLine
         /// <param name="options">
         /// Parsed command-line options. Will be deserialized into the type provided in <see cref="CommandActionAttribute.OptionsType"/>
         /// </param>
-        Task RunAsync(object options);
+        [UsedImplicitly]
+        Task RunAsync(T options);
     }
 }

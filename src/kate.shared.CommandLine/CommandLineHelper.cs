@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2022-2025 Kate Ward <kate@dariox.club>
+   Copyright 2022-2026 Kate Ward <kate@dariox.club>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using ParseResult = System.CommandLine.ParseResult;
 
 namespace kate.shared.CommandLine
@@ -41,8 +42,9 @@ namespace kate.shared.CommandLine
         /// <param name="commandHelpText">
         /// Help text for the command</param>
         /// <param name="handler">
-        /// Handler to be called when the generated command was ran.</param>
+        /// Handler to be called when the generated command was run</param>
         /// <returns>Instance of <see cref="Command"/></returns>
+        [PublicAPI]
         public static Command GenerateCommand<TOptions>(string commandName, string commandHelpText, Func<TOptions, Task> handler)
             where TOptions : class, new()
         {
@@ -70,9 +72,13 @@ namespace kate.shared.CommandLine
         /// <param name="commandHelpText">
         /// Help text for the command</param>
         /// <param name="handler">
-        /// Handler to be called when the generated command was ran.</param>
+        /// Handler to be called when the generated command was run</param>
         /// <returns>Instance of <see cref="Command"/></returns>
-        public static Command GenerateCommand<TOptions>(string commandName, string commandHelpText, Func<TOptions, ParseResult, Task> handler)
+        [PublicAPI]
+        public static Command GenerateCommand<TOptions>(
+            string commandName,
+            string commandHelpText,
+            Func<TOptions, ParseResult, Task> handler)
             where TOptions : class, new()
         {
             return GenerateCommand(typeof(TOptions), commandName, commandHelpText, (obj, ctx) =>
@@ -81,14 +87,14 @@ namespace kate.shared.CommandLine
                 {
                     return handler(null, ctx);
                 }
-                else if (obj is TOptions opts)
+                if (obj is TOptions opts)
                 {
                     return handler(opts, ctx);
                 }
                 throw new ArgumentException($"Not an instance of {typeof(TOptions)}", nameof(obj));
             });
         }
-
+        
         /// <summary>
         /// Generate an instance of <see cref="Command"/>
         /// </summary>
@@ -99,8 +105,9 @@ namespace kate.shared.CommandLine
         /// <param name="commandHelpText">
         /// Help text for the command</param>
         /// <param name="handler">
-        /// Handler to be called when the generated command was ran.</param>
+        /// Handler to be called when the generated command was run</param>
         /// <returns>Instance of <see cref="Command"/></returns>
+        [PublicAPI]
         public static Command GenerateCommand(
             Type optionsType,
             string commandName,
@@ -109,48 +116,13 @@ namespace kate.shared.CommandLine
         {
             var argumentPropertyMap = new Dictionary<string, (object, ActionParameterAttribute)>();
             var optionsProps = optionsType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var registeredParameterAliases = new List<(PropertyInfo Property, string Name, int? AliasAttributeIndex)>();
-            string BuildAlias(ActionParameterAliasAttribute a)
-            {
-                if (a.Kind == ActionParameterAliasKind.DoubleDash)
-                {
-                    return "--" + a.Alias.Trim();
-                }
-                else if (a.Kind == ActionParameterAliasKind.SingleDash)
-                {
-                    return "-" + a.Alias.Trim();
-                }
-                else if (a.Kind == ActionParameterAliasKind.Custom && a.CustomPrefix != null)
-                {
-                    return a.CustomPrefix + a.Alias.Trim();
-                }
-                else
-                {
-                    return a.Alias.Trim();
-                }
-            }
-            string BuildName(ActionParameterAttribute a)
-            {
-                var name = a.Name.Trim().Replace(' ', '-');
-                if (name.StartsWith("--") == false)
-                    name = $"--{name}";
-                return name;
-            }
-            string BuildShortName(ActionParameterAttribute a)
-            {
-                var shortName = a.ShortNameAlias.Trim();
-                if (!shortName.StartsWith("-"))
-                {
-                    shortName = "-" + shortName;
-                }
-                return shortName;
-            }
+            var registeredParameterAliases = new List<RegisteredParameterAliasRecord>();
             foreach (var prop in optionsProps)
             {
                 var actionParamAttr = prop.GetCustomAttribute<ActionParameterAttribute>();
                 if (actionParamAttr == null) continue;
-                var actionParamName = BuildName(actionParamAttr);
-                registeredParameterAliases.Add((prop, actionParamName, null));
+                var actionParamName = BuildCommandName(actionParamAttr);
+                registeredParameterAliases.Add(new(prop, actionParamName, null));
 
                 if (registeredParameterAliases.Any(e => e.Property != prop && e.Name == actionParamName))
                 {
@@ -159,8 +131,8 @@ namespace kate.shared.CommandLine
 
                 if (!string.IsNullOrEmpty(actionParamAttr.ShortNameAlias))
                 {
-                    var shortNameAlias = BuildShortName(actionParamAttr);
-                    registeredParameterAliases.Add((prop, shortNameAlias, null));
+                    var shortNameAlias = BuildCommandShortName(actionParamAttr);
+                    registeredParameterAliases.Add(new(prop, shortNameAlias, null));
                     if (registeredParameterAliases.Any(e => e.Property != prop && e.Name == shortNameAlias))
                     {
                         throw new InvalidOperationException($"An argument alias called \"{shortNameAlias}\" in property {prop.Name} already exists on {optionsType.Namespace}.{optionsType.Name}");
@@ -175,8 +147,8 @@ namespace kate.shared.CommandLine
                     {
                         throw new InvalidOperationException($"Alias cannot be empty for {nameof(ActionParameterAliasAttribute)}[{i}] on property {prop.Name} in class {optionsType.Namespace}.{optionsType.Name}");
                     }
-                    var a = BuildAlias(aliasAttr);
-                    registeredParameterAliases.Add((prop, a, i));
+                    var a = BuildCommandAlias(aliasAttr);
+                    registeredParameterAliases.Add(new(prop, a, i));
                     if (registeredParameterAliases.Any(e => e.Property != prop && e.Name == a))
                     {
                         throw new InvalidOperationException($"An argument alias called \"{a}\" in property {prop.Name} already exists on {optionsType.Namespace}.{optionsType.Name}");
@@ -247,7 +219,7 @@ namespace kate.shared.CommandLine
                 {
                     if (!string.IsNullOrEmpty(aliasAttr.Alias))
                     {
-                        var a = BuildAlias(aliasAttr);
+                        var a = BuildCommandAlias(aliasAttr);
                         if (!argumentAliases.Contains(a))
                         {
                             argumentAliases.Add(a);
@@ -255,7 +227,7 @@ namespace kate.shared.CommandLine
                     }
                 }
 
-                return argumentAliases.ToArray();
+                return [.. argumentAliases];
             }
 
             foreach (var prop in optionsProps)
@@ -269,15 +241,9 @@ namespace kate.shared.CommandLine
                     argumentAliasesM.RemoveAt(0);
                     var argumentInstance = Activator.CreateInstance(
                         genericArgumentType,
-                        argumentAliases.Length == 1 ? new object[]
-                        {
-                            argumentAliases[0], Array.Empty<string>()
-                        }
-                        : new object[]
-                        {
-                            argumentAliases[0],
-                            argumentAliasesM.ToArray()
-                        });
+                        argumentAliases.Length == 1
+                            ? [ argumentAliases[0], Array.Empty<string>() ]
+                            : [ argumentAliases[0], argumentAliasesM.ToArray() ]);
                     if (argumentInstance == null)
                     {
                         throw new InvalidOperationException($"Failed to create instance of {genericArgumentType}");
@@ -322,10 +288,7 @@ namespace kate.shared.CommandLine
                     });
                 if (addArgumentMethod != null)
                 {
-                    _ = addArgumentMethod.Invoke(cmd, new object[]
-                    {
-                        argValue
-                    });
+                    _ = addArgumentMethod.Invoke(cmd, [ argValue ]);
                 }
             }
 
@@ -368,7 +331,7 @@ namespace kate.shared.CommandLine
                                 FormatTypeName(typeof(ParseResult)));
                             throw new ApplicationException(msg);
                         }
-                        var argumentValue = getValueMethodGeneric.Invoke(ctx, new object[] { argValue });
+                        var argumentValue = getValueMethodGeneric.Invoke(ctx, [ argValue ]);
                         prop.SetValue(options, argumentValue);
                     }
                 }
@@ -390,9 +353,14 @@ namespace kate.shared.CommandLine
         /// <param name="commandHelpText">
         /// Help text for the command</param>
         /// <param name="handler">
-        /// Handler to be called when the generated command was ran.</param>
+        /// Handler to be called when the generated command was run</param>
         /// <returns>Instance of <see cref="Command"/></returns>
-        public static Command GenerateCommand(Type optionsType, string commandName, string commandHelpText, Func<object, Task> handler)
+        [PublicAPI]
+        public static Command GenerateCommand(
+            Type optionsType,
+            string commandName,
+            string commandHelpText,
+            Func<object, Task> handler)
         {
             return GenerateCommand(
                 optionsType,
@@ -417,9 +385,16 @@ namespace kate.shared.CommandLine
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="actionType"/> doesn't implement <see cref="IAction"/>
         /// </exception>
+        [PublicAPI]
         public static Command GenerateCommand(Type optionsType, Type actionType)
         {
-            if (!typeof(IAction).IsAssignableFrom(actionType))
+            var actionInts = actionType
+                .GetInterfaces();
+            var genericActionType = actionInts
+                .Any(i => i.IsGenericType && i.GenericTypeArguments[0] == optionsType);
+            if (!typeof(IAction).IsAssignableFrom(actionType) &&
+                !typeof(IAction<>).IsAssignableFrom(actionType) &&
+                !genericActionType)
             {
                 throw new ArgumentException($"Class must implement {nameof(IAction)}", nameof(actionType));
             }
@@ -428,7 +403,7 @@ namespace kate.shared.CommandLine
             {
                 var msg = string.Format("Attribute {0} does not exist on type {1}",
                     FormatTypeName(typeof(CommandActionAttribute)),
-                    actionType.ToString());
+                    actionType);
                 throw new ArgumentException(msg, nameof(actionType));
             }
 
@@ -438,8 +413,30 @@ namespace kate.shared.CommandLine
                 cmdActionAttr.DisplayName,
                 async (opts, ctx) =>
                 {
-                    var actionInstance = (IAction)Activator.CreateInstance(actionType);
-                    await actionInstance.RunAsync(opts);
+                    if (typeof(IAction).IsAssignableFrom(actionType))
+                    {
+                        var it = (IAction)Activator.CreateInstance(actionType);
+                        await it!.RunAsync(opts);
+                        return;
+                    }
+                    var instance = Activator.CreateInstance(actionType);
+                    var method = actionType.GetMethods()
+                        .Where((e) =>
+                        {
+                            var prm = e.GetParameters();
+                            return e.Name == nameof(IAction.RunAsync)
+                                   && prm.Length == 1 && prm[0].ParameterType == optionsType
+                                   && (e.ReturnType == typeof(Task) || typeof(Task).IsAssignableFrom(e.ReturnType));
+                        })
+                        .FirstOrDefault();
+                    if (method == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Could not find RunAsync method on type {actionType} with single parameter of type {optionsType}");
+                    }
+
+                    var task = (Task)method.Invoke(instance, [ opts ]);
+                    await task!;
                 });
         }
 
@@ -447,11 +444,61 @@ namespace kate.shared.CommandLine
         /// <typeparam name="TOptions"><inheritdoc cref="GenerateCommand(Type, Type)" path="/param[@name='optionsType']"/></typeparam>
         /// <typeparam name="TAction"><inheritdoc cref="GenerateCommand(Type, Type)" path="/param[@name='actionType']"/></typeparam>
         /// <returns><inheritdoc cref="GenerateCommand(Type, Type)" path="/returns"/></returns>
-        public static Command GenerateCommand<TOptions, TAction>()
-            where TOptions : class
-            where TAction : class, IAction
+        [PublicAPI]
+        public static Command GenerateCommandExplicit<TOptions, TAction>()
+            where TOptions : notnull, new()
+            where TAction : class, IAction<TOptions>
         {
             return GenerateCommand(typeof(TOptions), typeof(TAction));
+        }
+        
+        [PublicAPI]
+        public static Command GenerateCommand<TOptions, TAction>()
+            where TOptions : notnull, new()
+            where TAction : class, IAction<object>
+        {
+            return GenerateCommand(typeof(TOptions), typeof(TAction));
+        }
+        
+        private sealed record RegisteredParameterAliasRecord(
+            PropertyInfo Property,
+            string Name,
+            int? AliasAttributeIndex);
+
+        private static string BuildCommandAlias(ActionParameterAliasAttribute a)
+        {
+            var alias = a.Alias.Trim();
+            return a.Kind switch
+            {
+                ActionParameterAliasKind.NoPrefix => alias,
+                ActionParameterAliasKind.DoubleDash => "--" + alias,
+                ActionParameterAliasKind.SingleDash => "-" + alias,
+                ActionParameterAliasKind.Custom when a.CustomPrefix != null => a.CustomPrefix + alias,
+                _ => alias
+            };
+        }
+
+        private static string BuildCommandShortName(ActionParameterAttribute a)
+        {
+            var shortName = a.ShortNameAlias.Trim();
+            if (!shortName.StartsWith('-'))
+            {
+                shortName = '-' + shortName;
+            }
+            return shortName;
+        }
+
+        private static string BuildCommandName(ActionParameterAttribute a)
+        {
+            var name = a.Name.Trim();
+            while (name.Contains("  ", StringComparison.Ordinal))
+            {
+                name = name.Replace("  ", " ");
+            }
+            name = name.Replace(' ', '-');
+            if (!name.StartsWith("--", StringComparison.Ordinal))
+                name = "--" + name;
+            return name;
         }
 
         private static string FormatTypeName(Type type)
