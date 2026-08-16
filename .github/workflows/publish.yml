@@ -7,6 +7,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: windows-latest
+    name: Unit Test
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+      - name: Run unit tests
+        run: |
+          dotnet test
   build:
     runs-on: windows-latest
     strategy:
