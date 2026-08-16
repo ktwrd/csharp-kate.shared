@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kate.shared.CommandLine", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kate.shared.EtoForms", "src\kate.shared.EtoForms\kate.shared.EtoForms.csproj", "{E6403316-5C2D-4C9B-BC92-380A8C3CD4C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kate.shared.CommandLine.Test", "kate.shared.CommandLine.Test\kate.shared.CommandLine.Test.csproj", "{8A46A5DC-8A11-4728-9A8E-ABD2C9BA0540}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kate.shared.CommandLine.Test", "src\kate.shared.CommandLine.Test\kate.shared.CommandLine.Test.csproj", "{8A46A5DC-8A11-4728-9A8E-ABD2C9BA0540}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

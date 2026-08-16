@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\kate.shared.CommandLine\kate.shared.CommandLine.csproj" />
+    <ProjectReference Include="..\kate.shared.CommandLine\kate.shared.CommandLine.csproj" />
   </ItemGroup>
 
 </Project>
