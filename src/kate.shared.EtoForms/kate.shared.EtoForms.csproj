@@ -49,7 +49,7 @@
 
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.10.2" />
-    <PackageReference Include="Svg" Version="3.4.7" />
+    <PackageReference Include="Svg" Version="3.4.8" />
   </ItemGroup>
 
   <Choose>
