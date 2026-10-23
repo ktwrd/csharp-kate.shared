@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace kate.shared.EtoForms;
 
@@ -68,21 +69,19 @@ public static class EtoResourceHelper
         {
             var targetName = asm.GetManifestResourceNames()
                 .FirstOrDefault(e => e.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-            if (!string.IsNullOrEmpty(targetName))
+            if (string.IsNullOrEmpty(targetName))
+                continue;
+            
+            var stream = asm.GetManifestResourceStream(targetName);
+            if (stream != null) return stream;
+            
+            throw new EmbeddedResourceException($"Resource \"{name}\" stream is null, but it exists in assembly {asm}")
             {
-                var stream = asm.GetManifestResourceStream(targetName);
-                if (stream == null)
-                {
-                    throw new EmbeddedResourceException($"Resource \"{name}\" stream is null, but it exists in assembly {asm}")
-                    {
-                        Assembly = asm,
-                        SearchedAssemblies = assemblies,
-                        ResourceName = name,
-                        ResourceExists = true,
-                    };
-                }
-                return stream;
-            }
+                Assembly = asm,
+                SearchedAssemblies = assemblies,
+                ResourceName = name,
+                ResourceExists = true,
+            };
         }
         throw new EmbeddedResourceException($"Could not find resource \"{name}\" in any of the assemblies provided.")
         {
@@ -104,7 +103,7 @@ public static class EtoResourceHelper
     {
         lock (BitmapCache)
         {
-            var key = string.Join("\n", resourceName);
+            var key = "bitmap\n" + resourceName;
             if (!BitmapCache.TryGetValue(key, out var bitmap))
             {
                 var stream = GetStream(resourceName, assemblies);
@@ -135,14 +134,12 @@ public static class EtoResourceHelper
     {
         lock (BitmapCache)
         {
-            var keyItems = new string[]
-            {
-                resourceName,
-                "svg-to-bitmap",
-                size.Width.ToString(),
-                size.Height.ToString()
-            };
-            var key = string.Join("\n", keyItems);
+            var keySb = new StringBuilder();
+            keySb.AppendLine(resourceName);
+            keySb.AppendLine(CacheKeySvgToBitmap);
+            keySb.AppendLine(size.Width.ToString("D"));
+            keySb.AppendLine(size.Height.ToString("D"));
+            var key = keySb.ToString();
             if (!BitmapCache.TryGetValue(key, out var svgPng))
             {
                 var stream = GetStream(resourceName, assemblies);
@@ -153,6 +150,7 @@ public static class EtoResourceHelper
             return svgPng;
         }
     }
+
 
     /// <summary>
     /// <inheritdoc cref="BitmapFromSvg(string, Size, Assembly[])" path="/summary"/>
@@ -178,20 +176,21 @@ public static class EtoResourceHelper
     public static Icon IconFromSvg(string resourceName, Size[] sizes, params Assembly[] assemblies)
     {
         if (sizes.Any(e => e.Width > 256 || e.Height > 256))
-            throw new ArgumentException("One or more sizes has a width or height greater than 256");
+            throw new ArgumentException("One or more sizes has a width or height greater than 256", nameof(sizes));
         lock (IconCache)
         {
-            var keyItems = new string[2 + (sizes.Length * 2)];
-            keyItems[0] = resourceName;
-            keyItems[1] = "svg-to-bitmap-to-icon";
+            var keySb = new StringBuilder();
+            keySb.Append("size:");
+            keySb.AppendLine(sizes.Length.ToString("D"));
+            keySb.AppendLine(resourceName);
+            keySb.AppendLine(CacheKeySvgToBitmapToIcon);
             for (int i = 0; i < sizes.Length; i++)
             {
-                var b = (i + 1) * 2;
-                keyItems[b] = sizes[i].Width.ToString();
-                keyItems[b + 1] = sizes[i].Height.ToString();
+                keySb.AppendLine(sizes[i].Width.ToString("D"));
+                keySb.AppendLine(sizes[i].Height.ToString("D"));
             }
 
-            var key = string.Join("\n", keyItems);
+            var key = keySb.ToString();
             if (!IconCache.TryGetValue(key, out var svgIco))
             {
                 var svgStream = new MemoryStream();
@@ -209,6 +208,9 @@ public static class EtoResourceHelper
             return svgIco;
         }
     }
+    
+    private const string CacheKeySvgToBitmap = "svg-to-bitmap";
+    private const string CacheKeySvgToBitmapToIcon = CacheKeySvgToBitmap + "-to-icon";
 
     /// <summary>
     /// <para>Generate/Get an <see cref="Icon"/> from an embedded resource that's an SVG.</para>
