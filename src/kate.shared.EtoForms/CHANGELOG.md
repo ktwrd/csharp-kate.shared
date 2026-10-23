@@ -1,3 +1,6 @@
+## v1.7.2 (23rd Oct, 2026)
+- Updated `Eto.Forms` to `2.13.0`
+
 ## v1.7.1 (23rd Jun, 2026)
 - Updated `kate.shared` to `1.7.1`
 

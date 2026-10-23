@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.7.0</Version>
+    <Version>1.7.1</Version>
 
     <Title>Kate's Shared Library - Eto.Forms</Title>
     <Copyright>Copyright 2022-2026 Kate Ward &lt;kate@dariox.club&gt;</Copyright>
@@ -48,7 +48,7 @@
   </Choose>
 
   <ItemGroup>
-    <PackageReference Include="Eto.Forms" Version="2.10.2" />
+    <PackageReference Include="Eto.Forms" Version="2.13.0" />
     <PackageReference Include="Svg" Version="3.4.8" />
   </ItemGroup>
 
