@@ -53,13 +53,13 @@ jobs:
       - name: Add private GitHub registry to NuGet
         run: dotnet nuget add source https://nuget.pkg.github.com/ktwrd/index.json --name "GPR" --username ktwrd --password ${{ secrets.GITHUB_TOKEN }}
       - name: Add Gitea registry to NuGet
-        run: dotnet nuget add source https://git.redfur.cloud/api/packages/kate/nuget/index.json --name "Gitea" --username kate --password ${{ secrets.GITEA_TOKEN }}
+        run: dotnet nuget update source "git.redfur.cloud/kate" --username kate --password ${{ secrets.GITEA_TOKEN }}
         
       - name: Push generated package to GitHub registry
         run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
       
       - name: Push generated package to Gitea registry
-        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
+        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --source "git.redfur.cloud/kate" --skip-duplicate
 
   build-others:
     runs-on: windows-latest
@@ -85,7 +85,7 @@ jobs:
       - name: Add private GitHub registry to NuGet
         run: dotnet nuget add source https://nuget.pkg.github.com/ktwrd/index.json --name "GPR" --username ktwrd --password ${{ secrets.GITHUB_TOKEN }}
       - name: Add Gitea registry to NuGet
-        run: dotnet nuget add source https://git.redfur.cloud/api/packages/kate/nuget/index.json --name "Gitea" --username kate --password ${{ secrets.GITEA_TOKEN }}
+        run: dotnet nuget update source "git.redfur.cloud/kate" --username kate --password ${{ secrets.GITEA_TOKEN }}
           
       - name: Build solution and generate NuGet package
         run: |  
@@ -97,4 +97,4 @@ jobs:
         run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "GPR" --skip-duplicate
       
       - name: Push generated package to Gitea registry
-        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --source "Gitea" --skip-duplicate
+        run: dotnet nuget push .\src\${{matrix.project}}\out\*.nupkg --source "git.redfur.cloud/kate" --skip-duplicate
