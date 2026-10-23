@@ -23,7 +23,7 @@ jobs:
             10.x
       - name: Run unit tests
         run: |
-          dotnet test
+          dotnet test /p:UseLocalSource=true
   build:
     runs-on: windows-latest
     strategy:

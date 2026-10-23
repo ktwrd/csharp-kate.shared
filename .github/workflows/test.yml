@@ -2,11 +2,7 @@ name: Run Unit Tests
 
 on:
   push:
-    branches:
-    - main
   pull_request:
-    branches:
-    - main
   workflow_dispatch:
 
 jobs:
@@ -26,4 +22,4 @@ jobs:
             10.x
       - name: Run unit tests
         run: |
-          dotnet test
+          dotnet test /p:UseLocalSource=true

@@ -26,7 +26,7 @@ jobs:
             10.x
       - name: Run unit tests
         run: |
-          dotnet test
+          dotnet test /p:UseLocalSource=true
   build:
     runs-on: windows-latest
     name: Build Project
@@ -43,10 +43,10 @@ jobs:
             10.x
       - name: Build (debug)
         run: |
-          dotnet build -c Debug
+          dotnet build -c Debug /p:UseLocalSource=true
       - name: Clean
         run: |
           dotnet clean
       - name: Build (release)
         run: |
-          dotnet build -c Release
+          dotnet build -c Release /p:UseLocalSource=true
