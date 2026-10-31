@@ -1,5 +1,6 @@
-## Next Release
+## 1.7.2 (31st Oct, 2026)
 - Moved namespace of `ExceptionHelper` to `kate.shared.Helpers`
+- Updated `System.Text.Json` to `10.0.14`
 
 ## v1.7.1 (23rd Jun, 2026)
 - Created (modified) `ExceptionHelper` from the [XeniaBot](https://xenia.kate.pet) project.
