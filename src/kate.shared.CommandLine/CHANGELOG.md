@@ -1,4 +1,4 @@
-## Next Release
+## 1.7.2 (31st Oct, 2026)
 
 - Add support for generic instances of `IAction`
     - `IAction` now extends `IAction<object>` to support this change
