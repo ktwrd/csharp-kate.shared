@@ -24,31 +24,45 @@ public class Tests
     public void SimpleCommandImplicit()
     {
         var c = CommandLineHelper.GenerateCommand<TestAction1.Options, TestAction1>();
+        Assert.That(c.Name, Is.EqualTo("test"));
+        Assert.That(c.Description, Is.EqualTo("test"));
+        Assert.That(c.Options, Has.Count.EqualTo(0));
         var r = new RootCommand()
         {
             c
         };
         var e = r.Parse(["test"]).Invoke();
-        Assert.That(e, Is.EqualTo(0));
+        Assert.That(e, Is.Zero);
     }
     
     [Test]
     public void SimpleCommandExplicit()
     {
         var c = CommandLineHelper.GenerateCommandExplicit<TestAction2.Options, TestAction2>();
+        Assert.That(c.Name, Is.EqualTo("test"));
+        Assert.That(c.Description, Is.EqualTo("test"));
+        Assert.That(c.Options, Has.Count.EqualTo(0));
 
         var r = new RootCommand()
         {
             c
         };
         var e = r.Parse(["test"]).Invoke();
-        Assert.That(e, Is.EqualTo(0));
+        Assert.That(e, Is.Zero);
     }
     
     [Test]
     public void SimpleCommandExplicitMultiToken()
     {
         var c = CommandLineHelper.GenerateCommandExplicit<TestActionMulti3.Options, TestActionMulti3>();
+        Assert.That(c.Name, Is.EqualTo("test"));
+        Assert.That(c.Description, Is.EqualTo("test"));
+        Assert.That(c.Options, Has.Count.EqualTo(1));
+
+        Assert.That(c.Options[0].Name, Is.EqualTo("--array"));
+        Assert.That(c.Options[0].Description, Is.EqualTo("One or more values of something!"));
+        Assert.That(c.Options[0].Required, Is.True);
+        Assert.That(c.Options[0].AllowMultipleArgumentsPerToken, Is.True);
 
         var r = new RootCommand()
         {
@@ -60,7 +74,7 @@ public class Tests
             "--array", "test2",
             "--array", "ur mom",
             "--array", "HAHAHA X3!!!"]).Invoke();
-        Assert.That(e, Is.EqualTo(0));
+        Assert.That(e, Is.Zero);
     }
 
     [UsedImplicitly]
@@ -72,7 +86,7 @@ public class Tests
         {
             if (options is not Options)
                 throw new InvalidOperationException("Test failure - invalid type: " + options?.GetType());
-            Console.WriteLine("Log from inside TestAction1");
+            TestContext.Out.WriteLine("Log from inside TestAction1");
             return Task.CompletedTask;
         }
 
@@ -89,7 +103,7 @@ public class Tests
         [UsedImplicitly]
         public Task RunAsync(Options options)
         {
-            Console.WriteLine("Log from inside TestAction2");
+            TestContext.Out.WriteLine("Log from inside TestAction2");
             return Task.CompletedTask;
         }
 
@@ -106,7 +120,7 @@ public class Tests
         [UsedImplicitly]
         public Task RunAsync(Options options)
         {
-            Console.WriteLine("Log from inside TestActionMulti3");
+            TestContext.Out.WriteLine("Log from inside TestActionMulti3");
             Assert.That(options, Is.Not.Null);
             Assert.That(options.ArrayValue, Is.Not.Null);
             Assert.That(options.ArrayValue, Has.Length.EqualTo(4));
@@ -120,7 +134,7 @@ public class Tests
         [UsedImplicitly]
         public class Options
         {
-            [ActionParameter("array", "Array", AllowMultipleArgumentsPerToken = true)]
+            [ActionParameter("array", "One or more values of something!", AllowMultipleArgumentsPerToken = true)]
             public string[] ArrayValue { get; set; } = Array.Empty<string>();
         }
     }
