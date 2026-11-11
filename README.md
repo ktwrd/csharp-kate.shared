@@ -52,6 +52,7 @@ developing projects at home, and at work.
 
 | Supported .NET Version | `kate.shared`           | `kate.shared.CommandLine` | `kate.shared.EtoForms` |
 | ---------------------- | ----------------------- | ------------------------- | ---------------------- |
+| .NET 11.x              | ✔️                      | ✔️                        | ✔️                     |
 | .NET 10.x              | ✔️                      | ✔️                        | ✔️                     |
 | .NET 9.x               | ✔️ (via .NET 8)         | ✔️ (via .NET 8)           | ✔️ (via .NET 8)        |
 | .NET 8.x (recommended) | ✔️                      | ✔️                        | ✔️                     |

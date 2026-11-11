@@ -1,3 +1,7 @@
+## v1.8.0 (11th Nov, 2026)
+- Include `net11.0` in target frameworks for non-Windows systems (macOS, Linux, etc...)
+- Include `net11.0-windows7.0` in target frameworks for Windows.
+
 ## v1.7.2 (23rd Oct, 2026)
 - Updated `Eto.Forms` to `2.13.0`
 - String Builder is now used internally when generating the key for caching data in EtoResourceHelper.

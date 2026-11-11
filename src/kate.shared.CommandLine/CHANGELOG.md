@@ -1,3 +1,7 @@
+## 1.8.0 (11th Nov, 2026)
+- Include `net11.0` in Target Frameworks
+- Improve error handling, and throw more informative exceptions when anything fails in `CommandLineHelper`
+
 ## 1.7.2 (31st Oct, 2026)
 
 - Add support for generic instances of `IAction`

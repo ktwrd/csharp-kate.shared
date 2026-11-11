@@ -1,3 +1,7 @@
+## 1.8.0 (11th Nov, 2026)
+- Include `net11.0` in Target Frameworks
+- Updated `System.Text.Json` to `11.0.0` (only applicable for `netstandard2.0`)
+
 ## 1.7.2 (31st Oct, 2026)
 - Moved namespace of `ExceptionHelper` to `kate.shared.Helpers`
 - Updated `System.Text.Json` to `10.0.14`

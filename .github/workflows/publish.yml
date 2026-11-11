@@ -21,6 +21,7 @@ jobs:
           dotnet-version: |
             8.x
             10.x
+            11.x
       - name: Run unit tests
         run: |
           dotnet test /p:UseLocalSource=true
@@ -43,6 +44,7 @@ jobs:
           dotnet-version: |
             8.x
             10.x
+            11.x
           
       - name: Build solution and generate NuGet package
         run: |  
@@ -81,6 +83,7 @@ jobs:
           dotnet-version: |
             8.x
             10.x
+            11.x
         
       - name: Add private GitHub registry to NuGet
         run: dotnet nuget add source https://nuget.pkg.github.com/ktwrd/index.json --name "GPR" --username ktwrd --password ${{ secrets.GITHUB_TOKEN }}
