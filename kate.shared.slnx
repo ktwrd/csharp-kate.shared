@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="src/kate.shared.CommandLine.Test/kate.shared.CommandLine.Test.csproj" />
+  <Project Path="src/kate.shared.CommandLine/kate.shared.CommandLine.csproj" />
+  <Project Path="src/kate.shared.EtoForms/kate.shared.EtoForms.csproj" />
+  <Project Path="src/kate.shared/kate.shared.csproj" />
+</Solution>
