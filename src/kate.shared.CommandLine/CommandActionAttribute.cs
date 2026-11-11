@@ -41,6 +41,8 @@ namespace kate.shared.CommandLine
         /// </summary>
         public string DisplayName { get; set; }
 
+        internal bool WasDisplayNameProvided { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandActionAttribute"/> class.
         /// </summary>
@@ -63,6 +65,7 @@ namespace kate.shared.CommandLine
             ActionName = actionName;
             DisplayName = string.IsNullOrEmpty(displayName) ? actionName : displayName;
             OptionsType = optionsType;
+            WasDisplayNameProvided = !string.IsNullOrEmpty(displayName);
         }
     }
 }
